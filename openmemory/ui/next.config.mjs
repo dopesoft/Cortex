@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Temporarily disable for deployment, then fix issues
   eslint: {
     ignoreDuringBuilds: true,
   },

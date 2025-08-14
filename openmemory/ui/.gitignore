@@ -1,2 +1,4 @@
 .env.local
 tsconfig.tsbuildinfo
+tsconfig.tsbuildinfo
+.next/

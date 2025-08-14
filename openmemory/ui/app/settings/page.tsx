@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { Key, Plus, Trash2, Copy, AlertTriangle, X, Check, Crown, Shield, User } from 'lucide-react';

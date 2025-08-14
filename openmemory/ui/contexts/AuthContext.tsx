@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
+import * as React from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 import {
   Session, User, AuthError, AuthChangeEvent,
   AuthResponse, // For signIn and signUp
