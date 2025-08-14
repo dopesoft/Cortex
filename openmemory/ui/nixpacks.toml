@@ -3,6 +3,9 @@ NODE_ENV = "production"
 OPENAI_API_KEY = "sk-fake-for-build"
 NEXT_PUBLIC_API_URL = "https://cortex-production-58a8.up.railway.app"
 
+[phases.setup]
+nixPkgs = ["nodejs-20_x", "npm-10_x"]
+
 [phases.build]
 cmds = ["npm run build"]
 

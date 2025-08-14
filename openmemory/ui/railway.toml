@@ -7,3 +7,4 @@ healthcheckPath = "/"
 
 [env]
 NODE_ENV = "production"
+NODE_VERSION = "20"

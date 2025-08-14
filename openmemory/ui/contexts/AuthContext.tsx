@@ -74,6 +74,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isLocalDev = process.env.NODE_ENV === 'development';
 
   useEffect(() => {
+    // Only run auth logic in the browser (client-side)
+    if (typeof window === 'undefined') {
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     
     // Always use Supabase authentication
