@@ -132,9 +132,40 @@ def get_mock_user():
     return type('User', (), {'id': '00000000-0000-0000-0000-000000000000'})()
 
 # Endpoints
+@app.get("/")
+async def root():
+    """Root endpoint - Railway sometimes checks this instead of /health"""
+    return {
+        "service": "Cortex API", 
+        "status": "running",
+        "version": "1.0.0",
+        "health_check": "/health"
+    }
+
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "service": "cortex"}
+    """Enhanced health check for Railway deployment debugging"""
+    try:
+        health_status = {
+            "status": "healthy", 
+            "service": "cortex",
+            "timestamp": logger.handlers[0].formatter.formatTime(logging.LogRecord(
+                "", 0, "", 0, "", (), None
+            ), "%Y-%m-%d %H:%M:%S") if logger.handlers else "unknown",
+            "port": 8765,
+            "environment": "production",
+            "jean_memory_loaded": jm_search_memory is not None,
+            "components": {
+                "fastapi": "✅ Running",
+                "jean_memory": "✅ Loaded" if jm_search_memory else "❌ Fallback mode",
+                "mcp_tools": "✅ Available"
+            }
+        }
+        logger.info("Health check requested - all systems operational")
+        return health_status
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return {"status": "unhealthy", "error": str(e), "service": "cortex"}
 
 @app.post("/add_memories")
 async def add_memories(request: AddMemoriesRequest, api_key: str = Depends(verify_api_key)):

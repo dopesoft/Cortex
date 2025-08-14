@@ -6,13 +6,9 @@ dockerfilePath = "Dockerfile"
 startCommand = "python cortex_api.py"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
+healthcheckInterval = 30
 restartPolicyType = "on_failure"
 
 [env]
 CORTEX_PORT = "8765"
 NODE_ENV = "production"
-
-# Ensure Railway uses the root Dockerfile, not openmemory services
-[[services]]
-name = "cortex-api"
-source = "."
