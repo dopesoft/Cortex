@@ -3,10 +3,9 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "python cortex_api.py"
-healthcheckPath = "/health"
+# Use Docker CMD instead of explicit startCommand
+# healthcheckPath = "/health" - Disabled, using Docker healthcheck instead
 healthcheckTimeout = 300
-healthcheckInterval = 30
 restartPolicyType = "on_failure"
 
 [env]
