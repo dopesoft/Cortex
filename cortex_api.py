@@ -134,20 +134,38 @@ def get_mock_user():
 # Static file serving for web interface
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+import os
 
-# Mount static files
-app.mount("/static", StaticFiles(directory="templates"), name="static")
+# Mount static files only if templates directory exists
+if os.path.exists("templates"):
+    app.mount("/static", StaticFiles(directory="templates"), name="static")
 
 # Endpoints
 @app.get("/")
 async def serve_ui():
     """Serve the advanced memory management UI"""
-    return FileResponse("templates/advanced.html")
+    if os.path.exists("templates/advanced.html"):
+        return FileResponse("templates/advanced.html")
+    else:
+        return {
+            "service": "Cortex API", 
+            "status": "running",
+            "message": "UI templates not available in this deployment",
+            "api_endpoints": {
+                "health": "/health",
+                "search": "/search_memory",
+                "add": "/add_memories",
+                "clear": "/clear_namespace"
+            }
+        }
 
 @app.get("/simple")
 async def serve_simple_ui():
     """Serve the simple memory management UI"""
-    return FileResponse("templates/index.html")
+    if os.path.exists("templates/index.html"):
+        return FileResponse("templates/index.html")
+    else:
+        return {"message": "Simple UI not available", "use": "/"}
 
 @app.get("/ui")
 async def root():

@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the full OpenMemory system for REAL semantic search
 COPY openmemory/ /app/openmemory/
 COPY cortex_api.py /app/
+COPY templates/ /app/templates/
 
 # Set environment variables
 ENV PYTHONPATH=/app:/app/openmemory/api
