@@ -4,36 +4,30 @@ LABEL org.opencontainers.image.name="staffingbrain/cortex"
 
 WORKDIR /app
 
-# Install system dependencies including PostgreSQL client libraries
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies for Cortex API + jean-memory
-RUN pip install --no-cache-dir \
-    fastapi==0.104.1 \
-    uvicorn[standard]==0.24.0 \
-    pydantic==2.5.0 \
-    httpx==0.25.2 \
-    python-multipart==0.0.6 \
-    psycopg2-binary==2.9.9 \
-    sqlalchemy \
-    python-dotenv \
-    qdrant-client \
-    openai \
-    numpy \
-    tiktoken
+# Install Python dependencies for full OpenMemory stack
+COPY openmemory/api/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire openmemory directory structure
+# Copy the full OpenMemory system for REAL semantic search
 COPY openmemory/ /app/openmemory/
-COPY cortex_api.py .
+COPY cortex_api.py /app/
 
 # Set environment variables
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app:/app/openmemory/api
 ENV CORTEX_PORT=8765
 
 EXPOSE 8765
 
-# Run the Cortex API
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8765/health || exit 1
+
+# Run the Cortex API with full OpenMemory capabilities
 CMD ["python", "cortex_api.py"]
