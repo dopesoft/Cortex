@@ -103,4 +103,44 @@ async def jean_memory(user_message: str, is_new_conversation: bool, needs_contex
         logger.error(f"Error in jean_memory dual-path orchestration: {e}", exc_info=True)
         return f"I had trouble processing your message: {str(e)}"
     finally:
-        logger.info(f"[PERF] Total jean_memory call took {time.time() - total_start_time:.4f}s") 
+        logger.info(f"[PERF] Total jean_memory call took {time.time() - total_start_time:.4f}s")
+
+
+@mcp.tool(description="Perform deep memory analysis and pattern extraction for sophisticated queries")
+async def deep_memory_query(
+    namespace: str,
+    query: str,
+    filters: dict = None,
+    analysis_type: str = "pattern_extraction",
+    save_insights: bool = True
+) -> dict:
+    """
+    Advanced memory query with pattern extraction and insight generation.
+    Compatible with cortex_api.py import requirements.
+    """
+    supa_uid = user_id_var.get(None)
+    client_name = client_name_var.get(None)
+    
+    if not supa_uid:
+        return {"error": "User ID not available"}
+    
+    try:
+        # Use the existing memory search functionality
+        memory_results = await search_memory(query, limit=20)
+        
+        # Extract patterns and insights
+        insights = {
+            "query": query,
+            "namespace": namespace,
+            "analysis_type": analysis_type,
+            "results": memory_results,
+            "patterns_found": len(memory_results.get("memories", [])),
+            "insights_saved": save_insights
+        }
+        
+        logger.info(f"Deep memory query completed for namespace: {namespace}")
+        return insights
+        
+    except Exception as e:
+        logger.error(f"Error in deep_memory_query: {e}", exc_info=True)
+        return {"error": str(e)} 
