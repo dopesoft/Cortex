@@ -2,8 +2,6 @@
 NODE_ENV = "production"
 OPENAI_API_KEY = "sk-fake-for-build"
 NEXT_PUBLIC_API_URL = "https://cortex-production-58a8.up.railway.app"
-NEXT_PUBLIC_SUPABASE_URL = "https://fake.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY = "fake-key-for-build"
 
 [phases.build]
 cmds = ["npm run build"]

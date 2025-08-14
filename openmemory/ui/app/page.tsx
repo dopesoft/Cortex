@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import ParticleNetwork from "@/components/landing/ParticleNetwork";
 import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
 import { cn } from "@/lib/utils";
 
 const ChatBubble = ({ message, isUser, isPersonalized }: { message: string; isUser: boolean; isPersonalized?: boolean; }) => (
@@ -47,13 +46,6 @@ export default function LandingPage() {
     const params = new URLSearchParams(
       window.location.search + window.location.hash.substring(1)
     );
-    
-    // Admin bypass - redirect to dashboard if admin=true
-    if (params.get("admin") === "true") {
-      window.location.href = "/dashboard?admin=true";
-      return;
-    }
-    
     if (params.get("code") || params.get("access_token")) {
       return;
     }
@@ -67,17 +59,6 @@ export default function LandingPage() {
     );
   }
 
-  const reactCode = `import { JeanChat, useJeanAgent } from '@jeanmemory/react';
-
-function MathTutorApp() {
-  const { agent, signIn } = useJeanAgent({
-    systemPrompt: "A patient math tutor."
-  });
-
-  if (!agent) return <SignInWithJean onSuccess={signIn} />;
-
-  return <JeanChat agent={agent} />;
-}`;
 
   return (
     <div className="relative min-h-screen bg-gray-50 text-gray-900 overflow-hidden">
@@ -95,14 +76,11 @@ function MathTutorApp() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              <Image 
-                src="/images/jean-logo-full-bw-transparent.png"
-                alt="Jean Logo"
-                width={240}
-                height={80}
-                className="mx-auto"
-                priority
-              />
+              <div className="mx-auto w-60 h-20 flex items-center justify-center">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Cortex Memory
+                </h1>
+              </div>
             </motion.div>
             
             <motion.p
@@ -111,7 +89,7 @@ function MathTutorApp() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              Universal memory across your applications
+              Advanced Memory Management System
             </motion.p>
             
             <motion.div 
@@ -120,8 +98,8 @@ function MathTutorApp() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <button onClick={() => setActiveTab("users")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'users' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>For Users</button>
-              <button onClick={() => setActiveTab("developers")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'developers' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>For Developers</button>
+              <button onClick={() => setActiveTab("users")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'users' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>Memory Manager</button>
+              <button onClick={() => setActiveTab("developers")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'developers' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>Admin Panel</button>
             </motion.div>
 
             <motion.div
@@ -133,22 +111,17 @@ function MathTutorApp() {
                 <AnimatePresence mode="wait">
                   {activeTab === 'users' ? (
                       <motion.div key="user-cta" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className="w-full">
-                        <Link href={user ? "/dashboard" : "/auth?animate=true"} passHref className="w-full">
-                          <Button size="lg" variant="outline" className="w-full text-md py-6 border-orange-400 bg-white/50 hover:bg-gray-200/50">
-                              {user ? "Go to Dashboard" : "Sign In With Jean"}
+                        <Link href={user ? "/dashboard" : "/auth"} passHref className="w-full">
+                          <Button size="lg" variant="outline" className="w-full text-md py-6 border-purple-400 bg-white/50 hover:bg-gray-200/50">
+                              {user ? "Go to Dashboard" : "Sign In to Cortex"}
                           </Button>
                         </Link>
                       </motion.div>
                   ) : (
                     <motion.div key="dev-cta" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className="w-full space-y-4">
-                      <Link href="https://calendly.com/jonathan-jeantechnologies/30min" passHref className="w-full">
-                        <Button size="lg" variant="outline" className="w-full text-md py-6 border-gray-300 bg-white/50 hover:bg-gray-200/50">
-                          Request a Demo
-                        </Button>
-                      </Link>
-                      <Link href={user ? "/dashboard" : "/auth?animate=true"} passHref className="w-full">
-                        <Button variant="ghost" size="lg" className="w-full text-md text-gray-500 hover:text-gray-800">
-                            {user ? "Go to Dashboard" : "Sign In"}
+                      <Link href={user ? "/dashboard" : "/auth"} passHref className="w-full">
+                        <Button size="lg" variant="outline" className="w-full text-md py-6 border-blue-400 bg-white/50 hover:bg-gray-200/50">
+                          Admin Access
                         </Button>
                       </Link>
                     </motion.div>
@@ -197,12 +170,20 @@ function MathTutorApp() {
                     ) : (
                         <div>
                             <h2 className="text-2xl font-bold text-center mb-4">
-                                Instantly personalize with 5 lines of code
+                                Advanced Memory System Administration
                             </h2>
                             <p className="text-md text-gray-600 text-center mb-6 max-w-lg mx-auto">
-                                With the Jean SDK, you can add memory and personalization to any AI application.
+                                Access comprehensive memory management tools, analytics, and customer intelligence dashboards.
                             </p>
-                            <CodeBlock language="jsx" value={reactCode} />
+                            <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl p-6 text-center">
+                                <h3 className="text-lg font-semibold mb-3 text-gray-900">Admin Features</h3>
+                                <ul className="text-sm text-gray-600 space-y-2">
+                                    <li>• View all customer memory data</li>
+                                    <li>• Advanced search and analytics</li>
+                                    <li>• System monitoring and diagnostics</li>
+                                    <li>• Memory orchestration controls</li>
+                                </ul>
+                            </div>
                         </div>
                     )}
                 </motion.div>

@@ -17,16 +17,16 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://jeanmemory.com'),
+  metadataBase: new URL('https://cortex-ui-production.up.railway.app'),
   title: {
-    default: 'Cortex Memory - Your Personal Memory Layer',
+    default: 'Cortex Memory - Advanced Memory Management',
     template: '%s | Cortex Memory',
   },
-  description: 'Securely store, manage, and access your digital memories across all your AI applications with Cortex Memory.',
+  description: 'Advanced memory management system for AI applications and customer intelligence.',
   openGraph: {
-    title: 'Cortex Memory - Your Personal Memory Layer',
-    description: 'Securely store, manage, and access your digital memories across all your AI applications.',
-    url: 'https://jeanmemory.com',
+    title: 'Cortex Memory - Advanced Memory Management',
+    description: 'Advanced memory management system for AI applications and customer intelligence.',
+    url: 'https://cortex-ui-production.up.railway.app',
     siteName: 'Cortex Memory',
     images: [
       {
@@ -41,11 +41,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cortex Memory - Your Personal Memory Layer',
-    description: 'Securely store, manage, and access your digital memories across all your AI applications.',
+    title: 'Cortex Memory - Advanced Memory Management',
+    description: 'Advanced memory management system for AI applications and customer intelligence.',
     images: ['/og-image.png'],
   },
-  icons: [{ rel: 'icon', url: '/images/jean-bug.png' }],
+  icons: [{ rel: 'icon', url: '/logo.svg' }],
 };
 
 export default function RootLayout({
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/images/jean-white-theme-bug.png" sizes="any" />
+        <link rel="icon" href="/logo.svg" sizes="any" />
       </head>
       <body className={cn(
         "min-h-screen font-sans antialiased bg-background text-foreground",

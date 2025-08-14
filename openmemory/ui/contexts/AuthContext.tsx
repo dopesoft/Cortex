@@ -32,6 +32,7 @@ interface AuthContextType {
   signOut: () => Promise<{ error: AuthError | null }>; // signOut returns { error }
   accessToken: string | null;
   isLocalDev: boolean; // Flag to indicate if we're in local development mode
+  isAdmin: boolean; // Flag to indicate if user is admin (developer)
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,6 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<AuthError | null>(null);
   const [localAccessToken, setLocalAccessToken] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const dispatch = useDispatch();
   const posthog = usePostHog();
 
@@ -55,6 +57,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // This handles the nested user object from Supabase vs the flat one in local dev
     const userObject = currentSession?.user && 'user' in currentSession.user ? (currentSession.user as any).user : currentSession?.user;
     setUser(userObject ?? null);
+    
+    // Check if user is admin (developer) - you can modify this logic as needed
+    const adminEmails = ['nagarethineni@gmail.com']; // Add your admin emails here
+    const userIsAdmin = userObject?.email && adminEmails.includes(userObject.email);
+    setIsAdmin(userIsAdmin || false);
     
     if (userObject) {
       dispatch(setUserId(userObject.id));
@@ -214,6 +221,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signOut,
     accessToken: localAccessToken, // Corrected: use the state variable here
     isLocalDev,
+    isAdmin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
