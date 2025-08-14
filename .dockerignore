@@ -1,5 +1,4 @@
-# Ignore Node.js UI components to prevent confusion
-openmemory/ui/
+# Ignore Node.js SDK components to prevent confusion with UI
 sdk/react/
 *.log
 .git
@@ -12,5 +11,5 @@ test_*.py
 *.tar.gz
 CLAUDE_*.md
 *.md
-# Keep openmemory/api for the real semantic search functionality
+# Keep openmemory/ui for the UI service
 openmemory/docker-compose.yml
