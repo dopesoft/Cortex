@@ -12,5 +12,6 @@ test_*.py
 *.tar.gz
 CLAUDE_*.md
 *.md
-!openmemory/
-openmemory/ui/
+# Ignore the full openmemory stack - we only want the simple Cortex API
+openmemory/api/
+openmemory/docker-compose.yml
