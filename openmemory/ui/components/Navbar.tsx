@@ -8,50 +8,103 @@ import { usePathname, useRouter } from "next/navigation";
 import { CreateMemoryDialog } from "@/app/memories/components/CreateMemoryDialog";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
-import { Brain, Menu, X, Settings2, Book, Network, Star, User, Info, Heart, BookHeart } from "lucide-react";
+import { Brain, Menu, X, Settings2, Book, Network, Star, User, Info, Heart, BookHeart, LogOut, Sun, Moon, PanelLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icons } from "@/components/icons";
 import { UserNav } from "./UserNav";
 import { ThemeToggle } from "./ThemeToggle";
 import { useTheme } from "next-themes";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuBadge,
+  SidebarTrigger,
+  useSidebar,
+} from '@/components/ui/sidebar';
+import { useToast } from '@/components/ui/use-toast';
+
+interface NavigationItem {
+  href: string;
+  icon: React.ComponentType<any>;
+  label: string;
+  badge?: number;
+  description?: string;
+}
+
+const navigationItems: NavigationItem[] = [
+  {
+    href: '/dashboard',
+    icon: HiHome,
+    label: 'Dashboard',
+    description: 'Your memory overview'
+  },
+  {
+    href: '/memories',
+    icon: HiMiniRectangleStack,
+    label: 'Memories',
+    description: 'Browse your stored memories'
+  },
+  {
+    href: '/my-life',
+    icon: BookHeart,
+    label: 'My Life',
+    description: 'Personal knowledge graph'
+  },
+  {
+    href: '/apps',
+    icon: RiApps2AddFill,
+    label: 'Apps',
+    description: 'Connected applications'
+  },
+  {
+    href: '/how-to-use-tools',
+    icon: Info,
+    label: 'How to Use',
+    description: 'Learn how to use Cortex'
+  }
+];
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, signOut } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { toggleSidebar } = useSidebar();
+  const { toast } = useToast();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [pathname]);
-
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (mobileMenuOpen && !(event.target as Element).closest('header')) {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    if (mobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: 'Logged out',
+        description: 'You have been successfully logged out.',
+      });
+      router.push('/auth');
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to log out. Please try again.',
+        variant: 'destructive',
+      });
     }
-  }, [mobileMenuOpen]);
+  };
 
-  // Check for reduced motion preference
-  const prefersReducedMotion = typeof window !== 'undefined' && 
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Don't show navbar on landing page or auth page
+  // Don't show sidebar on landing page or auth page
   if (pathname === "/" || pathname === "/auth") {
     return null;
   }
@@ -61,179 +114,119 @@ export function Navbar() {
     return pathname.startsWith(href);
   };
 
-  const activeClass = "bg-secondary text-secondary-foreground";
-  const inactiveClass = "text-muted-foreground";
-
-  const navLinks = [
-    { href: "/dashboard", icon: <HiHome />, label: "Dashboard" },
-    { href: "/memories", icon: <HiMiniRectangleStack />, label: "Memories" },
-    { href: "/my-life", icon: <BookHeart className="w-4 h-4" />, label: "My Life" },
-    { href: "/how-to-use-tools", icon: <Info className="w-4 h-4" />, label: "How to Use" },
-  ];
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center px-4">
-        {/* Left Side - Logo */}
-        <div className="flex items-center flex-1">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            {mounted ? (
-              <Image
-                src={
-                  theme === "light"
-                    ? "/images/jean-white-theme-bug.png"
-                    : "/images/jean-bug.png"
-                }
-                alt="Jean Memory"
-                width={26}
-                height={26}
-              />
-            ) : (
-              <div style={{ width: 26, height: 26 }} />
-            )}
-            <span className="text-lg sm:text-xl font-medium">Jean</span>
-          </Link>
+    <Sidebar variant="inset" collapsible="icon">
+      <SidebarHeader className="px-3 py-2 group-data-[collapsible=icon]:px-2">
+        <div className="flex items-center gap-3 mt-[11px] group-data-[collapsible=icon]:mt-0">
+          <div className="w-9 h-9 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 group-data-[collapsible=icon]:ml-0.5 group-data-[collapsible=icon]:mt-[13px]">
+            <Brain className="w-5 h-5 text-white" />
+          </div>
+          <div className="group-data-[collapsible=icon]:hidden">
+            <h1 className="font-bold text-lg">Cortex Memory</h1>
+            <p className="text-xs text-muted-foreground">Personal Memory Layer</p>
+          </div>
         </div>
-        
-        {/* Center - Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-2">
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`flex items-center gap-2 ${
-                  isActive(link.href) ? activeClass : inactiveClass
-                }`}
-              >
-                {link.icon}
-                {link.label}
-              </Button>
-            </Link>
-          ))}
-        </div>
-        
-        {/* Right Side - Desktop Actions */}
-        <div className="hidden md:flex items-center gap-2 flex-1 justify-end">
-          {user ? (
-            <>
-              <Link href="/api-docs">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  API
-                </Button>
-              </Link>
-              <Link href="/pro">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-purple-500 hover:text-purple-400 flex items-center gap-1"
-                >
-                  <Star className="w-4 h-4" />
-                  Pro
-                </Button>
-              </Link>
-              <CreateMemoryDialog />
-              <ThemeToggle />
-              <UserNav />
-            </>
-          ) : (
-            <Link href="/auth">
-              <Button>
-                Login
-              </Button>
-            </Link>
-          )}
-        </div>
-
-        {/* Mobile Actions */}
-        <div className="flex items-center gap-2 md:hidden">
-          {user ? (
-            <>
-              <Link href="/api-docs">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  API
-                </Button>
-              </Link>
-              <Link href="/pro">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-purple-500 hover:text-purple-400 flex items-center gap-1"
-                >
-                  <Star className="w-4 h-4" />
-                  Pro
-                </Button>
-              </Link>
-              <ThemeToggle />
-              <UserNav />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2"
-              >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
-            </>
-          ) : (
-            <Link href="/auth">
-              <Button>
-                Login
-              </Button>
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && user && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ 
-              duration: prefersReducedMotion ? 0 : 0.2,
-              ease: "easeInOut"
-            }}
-            className="md:hidden border-b border-border bg-background/95 backdrop-blur"
-          >
-            <div className="container px-4 py-4">
-              <nav className="flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <Link 
-                    key={link.href} 
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className={`w-full justify-start gap-2 ${
-                        isActive(link.href) ? activeClass : inactiveClass
-                      }`}
+      </SidebarHeader>
+      
+      <SidebarContent>
+        <SidebarGroup className="mt-[30px] group-data-[collapsible=icon]:mt-[30px]">
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="group-data-[collapsible=icon]:space-y-4">
+              {navigationItems.map((item) => {
+                const Icon = item.icon;
+                const isActiveItem = isActive(item.href);
+                
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActiveItem}
+                      tooltip={item.description}
+                      className="w-full"
                     >
-                      {link.icon}
-                      {link.label}
-                    </Button>
-                  </Link>
-                ))}
-                <div className="pt-2 border-t border-border">
-                  <CreateMemoryDialog />
-                </div>
-              </nav>
+                      <Link href={item.href}>
+                        <Icon className="w-5 h-5 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+                        <span>{item.label}</span>
+                        {item.badge && (
+                          <SidebarMenuBadge className="bg-red-500 text-white">
+                            {item.badge}
+                          </SidebarMenuBadge>
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      
+      <SidebarFooter>
+        <SidebarMenu className="space-y-[7px]">
+          <SidebarMenuItem>
+            <SidebarMenuButton 
+              tooltip={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+              ) : (
+                <Moon className="w-5 h-5 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+              )}
+              <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href="/api-docs">
+                <Star className="w-5 h-5 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+                <span>API Docs</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href="/pro">
+                <Star className="w-5 h-5 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6 text-purple-500" />
+                <span className="text-purple-500">Pro</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          
+          {user && (
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                tooltip="Sign Out"
+                onClick={handleLogout}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20"
+              >
+                <LogOut className="w-5 h-5 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6" />
+                <span>Sign Out</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
+        </SidebarMenu>
+        
+        <div className="p-4 text-xs text-muted-foreground">
+          <div className="h-[48px] flex items-center justify-between group-data-[collapsible=icon]:justify-center">
+            <div className="group-data-[collapsible=icon]:hidden">
+              <p>Welcome, {user?.email?.split('@')[0] || 'there'}</p>
+              <p className="text-muted-foreground/70">{new Date().toLocaleDateString()}</p>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+            <button
+              onClick={toggleSidebar}
+              className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12"
+              title="Toggle Sidebar"
+            >
+              <PanelLeft className="h-5 w-5 group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6" />
+            </button>
+          </div>
+        </div>
+      </SidebarFooter>
+    </Sidebar>
   );
 }

@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { ProtectedRoute } from "@/components/ProtectedRoute"
 
 // --- Type Definitions ---
 
@@ -257,22 +258,43 @@ export default function ApiKeysPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div
-          className="flex justify-between items-center mb-8"
-        >
-          <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center"><Key className="mr-3" /> API Keys</h1>
-            <p className="text-muted-foreground">
-              Build agents with memory.
-            </p>
-          </div>
-          <Button variant="outline" onClick={() => setIsGenerateModalOpen(true)}>
-            <Plus size={20} className="mr-2" />
-            Generate New Key
-          </Button>
-        </div>
+    <ProtectedRoute>
+      <div className="flex h-full w-full bg-background">
+      <main className="flex-1 overflow-hidden">
+        <div className="h-full flex flex-col">
+          {/* Header */}
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex-shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          >
+            <div className="container mx-auto px-6 py-4">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="flex flex-col">
+                  <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                    <Key className="w-6 h-6" />
+                    API Keys & Settings
+                  </h1>
+                  <p className="text-muted-foreground">Manage your API keys and account settings</p>
+                </div>
+                <Button onClick={() => setIsGenerateModalOpen(true)}>
+                  <Plus size={20} className="mr-2" />
+                  Generate New Key
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Content */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex-1 overflow-hidden"
+          >
+            <div className="h-full overflow-y-auto">
+              <div className="container mx-auto px-6 py-6 max-w-7xl">
 
         {/* Personal Information Card */}
         {profile && (
@@ -483,6 +505,11 @@ export default function ApiKeysPage() {
             </CardContent>
           </Card>
         )}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </main>
       </div>
 
       <Dialog open={isGenerateModalOpen} onOpenChange={setIsGenerateModalOpen}>
@@ -564,7 +591,6 @@ export default function ApiKeysPage() {
           </DialogContent>
         </Dialog>
       )}
-
-    </div>
+    </ProtectedRoute>
   );
 } 

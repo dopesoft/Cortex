@@ -23,18 +23,38 @@ export default function MyLifePage() {
 
   return (
     <ProtectedRoute>
-      <div className="h-[calc(100vh-3.5rem)] lg:h-[calc(100vh-3.5rem)] flex bg-background text-foreground">
-      {/* Main Content Area */}
-      <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Main Content Section */}
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex-1 relative overflow-hidden"
-        >
-          <AdvancedKnowledgeGraph onMemorySelect={setSelectedMemory} />
-        </motion.div>
+      <div className="flex h-full w-full bg-background">
+        <main className="flex-1 overflow-hidden">
+          <div className="h-full flex flex-col">
+            {/* Header */}
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex-shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+            >
+              <div className="container mx-auto px-6 py-4">
+                <div className="flex flex-col">
+                  <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                    <Network className="w-6 h-6" />
+                    My Life
+                  </h1>
+                  <p className="text-muted-foreground">Explore your personal knowledge graph</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Content */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex-1 overflow-hidden"
+            >
+              <AdvancedKnowledgeGraph onMemorySelect={setSelectedMemory} />
+            </motion.div>
+          </div>
+        </main>
       </div>
 
       {/* Chat Interface Section */}

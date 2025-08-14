@@ -355,138 +355,136 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="relative h-[calc(100vh-4rem)] bg-background text-foreground overflow-hidden">
-      {/* Background Animation */}
-      <div className="absolute inset-0 z-0 h-full w-full">
-        <ParticleNetwork id="dashboard-particles" className="h-full w-full" interactive={false} particleCount={80} />
-      </div>
+      <div className="flex h-full w-full bg-background">
+        {/* Background Animation */}
+        <div className="absolute inset-0 z-0 h-full w-full">
+          <ParticleNetwork id="dashboard-particles" className="h-full w-full" interactive={false} particleCount={80} />
+        </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-4 max-w-7xl py-6 h-full flex flex-col">
-        {/* Migration Banner */}
-        <MigrationBanner />
-        
-        {/* Profile Completion Banner */}
-        <ProfileCompletionBanner />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 overflow-hidden">
-          {/* Left Side */}
-          <div className="lg:col-span-2 h-full flex flex-col overflow-hidden">
-            {/* <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+        <main className="flex-1 overflow-hidden relative z-10">
+          <div className="h-full flex flex-col">
+            {/* Header */}
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="mb-8"
+              className="flex-shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
             >
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-                Connect Your Universe
-              </h1>
-              <p className="mt-3 text-lg text-muted-foreground">
-                A single, unified memory layer for all your AI applications.
-              </p>
-            </motion.div> */}
+              <div className="container mx-auto px-6 py-4">
+                <div className="flex flex-col">
+                  <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+                  <p className="text-muted-foreground">Connect your universe of AI applications</p>
+                </div>
+                
+                {/* Migration Banner */}
+                <MigrationBanner />
+                
+                {/* Profile Completion Banner */}
+                <ProfileCompletionBanner />
+              </div>
+            </motion.div>
 
-            {/* Connection Status */}
+            {/* Content */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mb-8"
+              className="flex-1 overflow-hidden"
             >
-              <div className="bg-card border border-border rounded-lg p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm font-medium text-foreground">
-                    {connectedCount} of {availableApps.filter(a => !a.isComingSoon).length} Apps Connected
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {totalMemories.toLocaleString()} Memories Created
-                  </p>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div 
-                    className="bg-primary h-2 rounded-full" 
-                    style={{ width: `${(connectedCount / availableApps.filter(a => !a.isComingSoon).length) * 100}%` }}
-                  ></div>
+              <div className="h-full overflow-y-auto">
+                <div className="container mx-auto px-6 py-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
+                    {/* Left Side */}
+                    <div className="lg:col-span-2 space-y-6">
+                      {/* Connection Status */}
+                      <div className="bg-card border border-border rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <p className="text-sm font-medium text-foreground">
+                            {connectedCount} of {availableApps.filter(a => !a.isComingSoon).length} Apps Connected
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {totalMemories.toLocaleString()} Memories Created
+                          </p>
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full" 
+                            style={{ width: `${(connectedCount / availableApps.filter(a => !a.isComingSoon).length) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      {/* App Grid */}
+                      <div>
+                        {isLoadingApps ? (
+                          // Loading skeleton
+                          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                            {Array.from({ length: 9 }).map((_, index) => (
+                              <div key={index} className="h-32 bg-card border border-border rounded-lg animate-pulse">
+                                <div className="p-4 space-y-3">
+                                  <div className="h-6 bg-muted rounded w-3/4"></div>
+                                  <div className="h-4 bg-muted rounded w-full"></div>
+                                  <div className="h-8 bg-muted rounded w-1/2"></div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                            {displayedApps.map((app, index) => (
+                              <AppCard
+                                key={app.id || index}
+                                app={app}
+                                onConnect={handleConnectApp}
+                                index={index}
+                                isSyncing={syncingApps[app.id] || !!appTaskIds[app.id]}
+                                onSyncStart={(appId, taskId) => {
+                                  setSyncingApps(prev => ({ ...prev, [appId]: true }));
+                                  setAppTaskIds(prev => ({ ...prev, [appId]: taskId }));
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Right Side */}
+                    <div className="lg:col-span-1">
+                      <AnalysisPanel />
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
-
-
-            {/* Scrollable App Grid Container */}
-            <div className="flex-1 overflow-y-auto pr-2">
-              {/* App Grid */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                {isLoadingApps ? (
-                  // Loading skeleton
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {Array.from({ length: 9 }).map((_, index) => (
-                      <div key={index} className="h-32 bg-card border border-border rounded-lg animate-pulse">
-                        <div className="p-4 space-y-3">
-                          <div className="h-6 bg-muted rounded w-3/4"></div>
-                          <div className="h-4 bg-muted rounded w-full"></div>
-                          <div className="h-8 bg-muted rounded w-1/2"></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {displayedApps.map((app, index) => (
-                      <AppCard
-                        key={app.id || index}
-                        app={app}
-                        onConnect={handleConnectApp}
-                        index={index}
-                        isSyncing={syncingApps[app.id] || !!appTaskIds[app.id]}
-                        onSyncStart={(appId, taskId) => {
-                          setSyncingApps(prev => ({ ...prev, [appId]: true }));
-                          setAppTaskIds(prev => ({ ...prev, [appId]: taskId }));
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            </div>
-            
           </div>
-
-          {/* Right Side */}
-          <div className="lg:col-span-1 h-full overflow-hidden">
-            <AnalysisPanel />
-          </div>
-        </div>
-      </div>
-      
-      {selectedApp && (
-        <InstallModal
-          open={isInstallModalOpen}
-          onOpenChange={handleModalClose}
+        </main>
+        
+        {selectedApp && (
+          <InstallModal
+            open={isInstallModalOpen}
+            onOpenChange={handleModalClose}
+            app={selectedApp}
+            onSyncStart={(appId, taskId) => {
+              setSyncingApps(prev => ({ ...prev, [appId]: true }));
+              setAppTaskIds(prev => ({ ...prev, [appId]: taskId }));
+            }}
+          />
+        )}
+        <SyncModal
           app={selectedApp}
+          open={isSyncModalOpen}
+          onOpenChange={setIsSyncModalOpen}
           onSyncStart={(appId, taskId) => {
             setSyncingApps(prev => ({ ...prev, [appId]: true }));
             setAppTaskIds(prev => ({ ...prev, [appId]: taskId }));
           }}
         />
-      )}
-      <SyncModal
-        app={selectedApp}
-        open={isSyncModalOpen}
-        onOpenChange={setIsSyncModalOpen}
-        onSyncStart={(appId, taskId) => {
-          setSyncingApps(prev => ({ ...prev, [appId]: true }));
-          setAppTaskIds(prev => ({ ...prev, [appId]: taskId }));
-        }}
-      />
-      <RequestIntegrationModal
-        open={isRequestIntegrationModalOpen}
-        onOpenChange={setIsRequestIntegrationModalOpen}
-      />
-    </div>
+        <RequestIntegrationModal
+          open={isRequestIntegrationModalOpen}
+          onOpenChange={setIsRequestIntegrationModalOpen}
+        />
+      </div>
     </ProtectedRoute>
   );
 } 

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { MemoriesSection } from "@/app/memories/components/MemoriesSection";
 import { MemoryFilters } from "@/app/memories/components/MemoryFilters";
 import { useRouter, useSearchParams } from "next/navigation";
-import "@/styles/animation.css";
 import UpdateMemory from "@/components/shared/update-memory";
 import { useUI } from "@/hooks/useUI";
 import { DeepQueryDialog } from "./components/DeepQueryDialog";
@@ -13,6 +12,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { STMToggle } from "@/components/memory-v3/STMToggle";
+import { CreateMemoryDialog } from "./components/CreateMemoryDialog";
+import { motion } from "framer-motion";
 
 export default function MemoriesPage() {
   const router = useRouter();
@@ -57,44 +58,68 @@ export default function MemoriesPage() {
 
   return (
     <ProtectedRoute>
-      <div className="">
-      <UpdateMemory
-        memoryId={updateMemoryDialog.memoryId || ""}
-        memoryContent={updateMemoryDialog.memoryContent || ""}
-        open={updateMemoryDialog.isOpen}
-        onOpenChange={handleCloseUpdateMemoryDialog}
-      />
-      <main className="flex-1 py-6">
-        <div className="container">
-          {/* Sticky Header with Search, Filters, and Deep Query */}
-          <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 pb-4 mb-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-1 pt-4 animate-fade-slide-down">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
-                <MemoryFilters onFilterChange={loadMemories} />
-                {/* <STMToggle /> */}
+      <div className="flex h-full w-full bg-background">
+        <UpdateMemory
+          memoryId={updateMemoryDialog.memoryId || ""}
+          memoryContent={updateMemoryDialog.memoryContent || ""}
+          open={updateMemoryDialog.isOpen}
+          onOpenChange={handleCloseUpdateMemoryDialog}
+        />
+        
+        <main className="flex-1 overflow-hidden">
+          <div className="h-full flex flex-col">
+            {/* Header */}
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex-shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+            >
+              <div className="container mx-auto px-6 py-4">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div className="flex flex-col">
+                    <h1 className="text-2xl font-bold tracking-tight">Memories</h1>
+                    <p className="text-muted-foreground">Browse and manage your stored memories</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <DeepQueryDialog />
+                    <CreateMemoryDialog />
+                  </div>
+                </div>
+                
+                {/* Filters */}
+                <div className="mt-4">
+                  <MemoryFilters onFilterChange={loadMemories} />
+                </div>
               </div>
-              <div className="flex items-center">
-                <DeepQueryDialog />
+            </motion.div>
+
+            {/* Content */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex-1 overflow-hidden"
+            >
+              <div className="h-full overflow-y-auto">
+                <div className="container mx-auto px-6 py-6">
+                  <MemoriesSection
+                    memories={memories}
+                    totalItems={totalItems}
+                    isLoading={isLoading}
+                    onClearFilters={handleClearFilters}
+                    hasActiveFilters={
+                      filters.selectedApps.length > 0 ||
+                      filters.selectedCategories.length > 0 ||
+                      filters.showArchived
+                    }
+                  />
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
-          {/* Scrollable Content */}
-          <div className="animate-fade-slide-down delay-1">
-            <MemoriesSection
-              memories={memories}
-              totalItems={totalItems}
-              isLoading={isLoading}
-              onClearFilters={handleClearFilters}
-              hasActiveFilters={
-                filters.selectedApps.length > 0 ||
-                filters.selectedCategories.length > 0 ||
-                filters.showArchived
-              }
-            />
-          </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
     </ProtectedRoute>
   );
 }
