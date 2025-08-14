@@ -127,7 +127,7 @@ export const AuthForm = () => {
             animate={{ scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            {isLogin ? 'Sign into your Vault' : 'Create your Vault'}
+            {isLogin ? 'Sign in to Cortex Memory' : 'Create Cortex Account'}
           </motion.h1>
           <p className="text-zinc-400">
             {isLogin ? 'See your memories' : 'Create an account to secure your memories'}

@@ -3,44 +3,15 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import ParticleNetwork from "@/components/landing/ParticleNetwork";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-const ChatBubble = ({ message, isUser, isPersonalized }: { message: string; isUser: boolean; isPersonalized?: boolean; }) => (
-    <div className={`flex items-start gap-3 my-2 ${isUser ? "justify-end" : ""}`}>
-      {!isUser && (
-        <div className={`w-8 h-8 rounded-full flex-shrink-0 ${isPersonalized ? "bg-slate-400" : "bg-gray-400"}`}></div>
-      )}
-      <div className="min-w-0"> 
-        <div
-          className={`px-4 py-2 rounded-lg max-w-xs text-sm inline-block break-words ${
-            isUser
-              ? "bg-gray-800 text-white rounded-br-none"
-              : "bg-gray-200 text-gray-800 rounded-bl-none"
-          }`}
-        >
-          {message}
-        </div>
-      </div>
-    </div>
-  );
-
-const AppIcon = ({ src, alt }: { src: string; alt: string; }) => (
-    <motion.div
-        whileHover={{ scale: 1.1, y: -5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-        className="bg-white p-3 rounded-full shadow-md"
-    >
-        <Image src={src} alt={alt} width={28} height={28} />
-    </motion.div>
-);
+import { Brain, Shield, Database, Zap } from "lucide-react";
 
 export default function LandingPage() {
-  const { user, isLoading } = useAuth();
-  const [activeTab, setActiveTab] = useState("users");
+  const { user, isLoading, isAdmin } = useAuth();
+  const [activeTab, setActiveTab] = useState("memory");
 
   useEffect(() => {
     const params = new URLSearchParams(
@@ -59,7 +30,6 @@ export default function LandingPage() {
     );
   }
 
-
   return (
     <div className="relative min-h-screen bg-gray-50 text-gray-900 overflow-hidden">
       <div className="absolute inset-0 z-0">
@@ -76,10 +46,14 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              <div className="mx-auto w-60 h-20 flex items-center justify-center">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              <div className="mx-auto flex flex-col items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center mb-4">
+                  <Brain className="w-10 h-10 text-white" />
+                </div>
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
                   Cortex Memory
                 </h1>
+                <p className="text-sm text-gray-500">Advanced Memory Management System</p>
               </div>
             </motion.div>
             
@@ -89,7 +63,7 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              Advanced Memory Management System
+              Intelligent Memory Infrastructure for AI
             </motion.p>
             
             <motion.div 
@@ -98,8 +72,8 @@ export default function LandingPage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <button onClick={() => setActiveTab("users")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'users' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>Memory Manager</button>
-              <button onClick={() => setActiveTab("developers")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'developers' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>Admin Panel</button>
+              <button onClick={() => setActiveTab("memory")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'memory' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>Memory System</button>
+              <button onClick={() => setActiveTab("admin")} className={cn("w-1/2 p-2 rounded-md text-sm font-medium transition-colors", activeTab === 'admin' ? "bg-gray-900 text-white shadow" : "text-gray-600 hover:bg-gray-300/50")}>Admin Access</button>
             </motion.div>
 
             <motion.div
@@ -109,19 +83,19 @@ export default function LandingPage() {
                 transition={{ duration: 0.5, delay: 0.8 }}
               >
                 <AnimatePresence mode="wait">
-                  {activeTab === 'users' ? (
+                  {activeTab === 'memory' ? (
                       <motion.div key="user-cta" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className="w-full">
                         <Link href={user ? "/dashboard" : "/auth"} passHref className="w-full">
                           <Button size="lg" variant="outline" className="w-full text-md py-6 border-purple-400 bg-white/50 hover:bg-gray-200/50">
-                              {user ? "Go to Dashboard" : "Sign In to Cortex"}
+                              {user ? (isAdmin ? "Access Cortex Admin" : "Access Restricted") : "Sign in to Cortex"}
                           </Button>
                         </Link>
                       </motion.div>
                   ) : (
-                    <motion.div key="dev-cta" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className="w-full space-y-4">
+                    <motion.div key="admin-cta" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className="w-full space-y-4">
                       <Link href={user ? "/dashboard" : "/auth"} passHref className="w-full">
                         <Button size="lg" variant="outline" className="w-full text-md py-6 border-blue-400 bg-white/50 hover:bg-gray-200/50">
-                          Admin Access
+                          {user ? (isAdmin ? "Admin Dashboard" : "Admin Access Only") : "Admin Login"}
                         </Button>
                       </Link>
                     </motion.div>
@@ -142,47 +116,52 @@ export default function LandingPage() {
                     transition={{ duration: 0.3 }}
                     className="w-full max-w-xl"
                 >
-                    {activeTab === 'users' ? (
+                    {activeTab === 'memory' ? (
                         <div className="space-y-4 md:space-y-6">
-                            <div className="flex justify-center items-center space-x-4">
-                                <AppIcon src="/images/ChatGPT-Logo.svg" alt="ChatGPT Logo" />
-                                <AppIcon src="/images/claude.webp" alt="Claude Logo" />
-                                <AppIcon src="/images/notion.svg" alt="Notion Logo" />
-                                <AppIcon src="/images/obsidian.svg" alt="Obsidian Logo" />
-                                <AppIcon src="/images/substack.png" alt="Substack Logo" />
-                                <AppIcon src="/images/vscode.svg" alt="VS Code Logo" />
-                            </div>
-                            <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl p-4 flex flex-col h-56">
-                                <h3 className="text-md font-semibold mb-2 text-center text-gray-500 flex-shrink-0">Generic AI</h3>
-                                <div className="p-2 rounded-lg flex flex-col justify-end flex-grow min-h-0">
-                                    <ChatBubble isUser={true} message="What should I work on today?" />
-                                    <ChatBubble isUser={false} message="You could work on tasks, check your calendar, or read emails." />
-                                </div>
-                            </div>
-                            <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl p-4 flex flex-col h-56">
-                                <h3 className="text-md font-semibold mb-2 text-center text-gray-900 flex-shrink-0">Personalized with Jean</h3>
-                                <div className="p-2 rounded-lg flex flex-col justify-end flex-grow min-h-0">
-                                    <ChatBubble isUser={true} message="What should I work on today?" />
-                                    <ChatBubble isUser={false} message="Finalize the Q3 launch slides. You also wanted to practice Spanish." isPersonalized={true} />
+                            <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+                                <h3 className="text-lg font-semibold mb-4 text-gray-900">Core Features</h3>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
+                                        <Database className="w-5 h-5 text-purple-600" />
+                                        <span className="text-sm text-gray-700">Multi-tenant memory storage</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Zap className="w-5 h-5 text-blue-600" />
+                                        <span className="text-sm text-gray-700">Real-time synchronization</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Shield className="w-5 h-5 text-green-600" />
+                                        <span className="text-sm text-gray-700">Enterprise-grade security</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Brain className="w-5 h-5 text-indigo-600" />
+                                        <span className="text-sm text-gray-700">AI-powered insights</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ) : (
                         <div>
                             <h2 className="text-2xl font-bold text-center mb-4">
-                                Advanced Memory System Administration
+                                Administrator Control Panel
                             </h2>
                             <p className="text-md text-gray-600 text-center mb-6 max-w-lg mx-auto">
-                                Access comprehensive memory management tools, analytics, and customer intelligence dashboards.
+                                Complete control over memory systems, customer data, and AI orchestration.
                             </p>
                             <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl p-6 text-center">
-                                <h3 className="text-lg font-semibold mb-3 text-gray-900">Admin Features</h3>
+                                <h3 className="text-lg font-semibold mb-3 text-gray-900">Admin Capabilities</h3>
                                 <ul className="text-sm text-gray-600 space-y-2">
-                                    <li>• View all customer memory data</li>
-                                    <li>• Advanced search and analytics</li>
-                                    <li>• System monitoring and diagnostics</li>
+                                    <li>• Full customer memory access</li>
+                                    <li>• System configuration & monitoring</li>
                                     <li>• Memory orchestration controls</li>
+                                    <li>• Analytics & performance metrics</li>
+                                    <li>• Integration management</li>
                                 </ul>
+                                <div className="mt-4 p-2 bg-red-50 rounded-lg">
+                                    <p className="text-xs text-red-600">
+                                        Restricted to: khaya@staffingreferrals.com
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     )}

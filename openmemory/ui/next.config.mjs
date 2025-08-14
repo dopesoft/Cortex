@@ -9,6 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  generateBuildId: async () => {
+    // This ensures each build gets a unique ID to prevent caching
+    return `build-${Date.now()}`;
+  },
   async redirects() {
     return [
       {
