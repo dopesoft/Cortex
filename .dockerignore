@@ -1,0 +1,16 @@
+# Ignore Node.js UI components to prevent confusion
+openmemory/ui/
+sdk/react/
+*.log
+.git
+.gitignore
+README.md
+docs/
+evals/
+scripts/
+test_*.py
+*.tar.gz
+CLAUDE_*.md
+*.md
+!openmemory/
+openmemory/ui/
