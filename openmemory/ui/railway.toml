@@ -1,0 +1,10 @@
+[build]
+buildCommand = "npm run build"
+watchPatterns = ["**/*.tsx", "**/*.ts", "**/*.js", "**/*.jsx", "**/*.css"]
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/"
+
+[env]
+NODE_ENV = "production"
