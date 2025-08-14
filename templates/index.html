@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex Memory Manager</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f0f; color: #fff; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #00ff88; font-size: 2.5rem; margin-bottom: 10px; }
+        .header p { color: #888; }
+        .section { background: #1a1a1a; border-radius: 12px; padding: 30px; margin-bottom: 30px; border: 1px solid #333; }
+        .section h2 { color: #00ff88; margin-bottom: 20px; font-size: 1.5rem; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #ccc; font-weight: 500; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #444; 
+            border-radius: 8px; color: #fff; font-size: 14px; 
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none; border-color: #00ff88; box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+        }
+        .btn { 
+            background: linear-gradient(135deg, #00ff88, #00cc70); color: #000; 
+            border: none; padding: 12px 24px; border-radius: 8px; 
+            cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .results { background: #111; border-radius: 8px; padding: 20px; margin-top: 20px; }
+        .memory-item { background: #222; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #00ff88; }
+        .memory-text { color: #fff; margin-bottom: 10px; }
+        .memory-meta { color: #888; font-size: 12px; }
+        .loading { color: #00ff88; text-align: center; padding: 20px; }
+        .error { color: #ff4444; background: #2a1a1a; border: 1px solid #ff4444; border-radius: 8px; padding: 15px; margin-top: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Cortex Memory Manager</h1>
+            <p>Manage your AI memory system and semantic search</p>
+        </div>
+
+        <div class="grid">
+            <div class="section">
+                <h2>🔍 Search Memories</h2>
+                <div class="form-group">
+                    <label for="searchNamespace">Namespace:</label>
+                    <input type="text" id="searchNamespace" placeholder="e.g., staffingbrain_john_doe" value="staffingbrain">
+                </div>
+                <div class="form-group">
+                    <label for="searchQuery">Search Query:</label>
+                    <input type="text" id="searchQuery" placeholder="What are you looking for?">
+                </div>
+                <button class="btn" onclick="searchMemories()">Search Memories</button>
+                <div id="searchResults"></div>
+            </div>
+
+            <div class="section">
+                <h2>💾 Add Memory</h2>
+                <div class="form-group">
+                    <label for="addNamespace">Namespace:</label>
+                    <input type="text" id="addNamespace" placeholder="e.g., staffingbrain_john_doe" value="staffingbrain">
+                </div>
+                <div class="form-group">
+                    <label for="memoryText">Memory Text:</label>
+                    <textarea id="memoryText" rows="4" placeholder="Enter the memory to store..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="memorySource">Source (optional):</label>
+                    <input type="text" id="memorySource" placeholder="e.g., document name, conversation">
+                </div>
+                <button class="btn" onclick="addMemory()">Add Memory</button>
+                <div id="addResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🗑️ Clear Namespace</h2>
+            <div class="form-group">
+                <label for="clearNamespace">Namespace to Clear:</label>
+                <input type="text" id="clearNamespace" placeholder="e.g., staffingbrain_john_doe">
+            </div>
+            <button class="btn" onclick="clearNamespace()" style="background: linear-gradient(135deg, #ff4444, #cc3333);">Clear All Memories</button>
+            <div id="clearResult"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const API_KEY = 'default-api-key'; // Using default from cortex_api.py
+
+        async function searchMemories() {
+            const namespace = document.getElementById('searchNamespace').value;
+            const query = document.getElementById('searchQuery').value;
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!namespace || !query) {
+                showError(resultsDiv, 'Please enter both namespace and query');
+                return;
+            }
+
+            showLoading(resultsDiv);
+            
+            try {
+                const response = await fetch(`${API_BASE}/search_memory`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({ namespace, query, limit: 10 })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayMemories(resultsDiv, data.memories || []);
+                } else {
+                    showError(resultsDiv, data.detail || 'Search failed');
+                }
+            } catch (error) {
+                showError(resultsDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        async function addMemory() {
+            const namespace = document.getElementById('addNamespace').value;
+            const text = document.getElementById('memoryText').value;
+            const source = document.getElementById('memorySource').value;
+            const resultDiv = document.getElementById('addResult');
+            
+            if (!namespace || !text) {
+                showError(resultDiv, 'Please enter both namespace and memory text');
+                return;
+            }
+
+            showLoading(resultDiv);
+            
+            try {
+                const memory = { text, metadata: {} };
+                if (source) memory.metadata.source = source;
+                
+                const response = await fetch(`${API_BASE}/add_memories`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({ namespace, memories: [memory] })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '<div style="color: #00ff88; padding: 15px;">✅ Memory added successfully!</div>';
+                    document.getElementById('memoryText').value = '';
+                    document.getElementById('memorySource').value = '';
+                } else {
+                    showError(resultDiv, data.detail || 'Failed to add memory');
+                }
+            } catch (error) {
+                showError(resultDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        async function clearNamespace() {
+            const namespace = document.getElementById('clearNamespace').value;
+            const resultDiv = document.getElementById('clearResult');
+            
+            if (!namespace) {
+                showError(resultDiv, 'Please enter a namespace');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to clear ALL memories in namespace "${namespace}"? This cannot be undone.`)) {
+                return;
+            }
+
+            showLoading(resultDiv);
+            
+            try {
+                const response = await fetch(`${API_BASE}/clear_namespace`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({ namespace, confirm: true })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '<div style="color: #00ff88; padding: 15px;">✅ Namespace cleared successfully!</div>';
+                    document.getElementById('clearNamespace').value = '';
+                } else {
+                    showError(resultDiv, data.detail || 'Failed to clear namespace');
+                }
+            } catch (error) {
+                showError(resultDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        function displayMemories(container, memories) {
+            if (memories.length === 0) {
+                container.innerHTML = '<div class="results"><p style="color: #888;">No memories found.</p></div>';
+                return;
+            }
+
+            const html = memories.map(memory => `
+                <div class="memory-item">
+                    <div class="memory-text">${escapeHtml(memory.text || memory.content || 'No text')}</div>
+                    <div class="memory-meta">
+                        ${memory.metadata ? Object.entries(memory.metadata).map(([key, value]) => 
+                            `${key}: ${escapeHtml(String(value))}`
+                        ).join(' • ') : 'No metadata'}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `<div class="results"><h3>Found ${memories.length} memories:</h3>${html}</div>`;
+        }
+
+        function showLoading(container) {
+            container.innerHTML = '<div class="loading">🔄 Loading...</div>';
+        }
+
+        function showError(container, message) {
+            container.innerHTML = `<div class="error">❌ ${escapeHtml(message)}</div>`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

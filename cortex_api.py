@@ -131,15 +131,34 @@ def get_mock_user():
     # In production, this should map namespace to actual users
     return type('User', (), {'id': '00000000-0000-0000-0000-000000000000'})()
 
+# Static file serving for web interface
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="templates"), name="static")
+
 # Endpoints
 @app.get("/")
+async def serve_ui():
+    """Serve the advanced memory management UI"""
+    return FileResponse("templates/advanced.html")
+
+@app.get("/simple")
+async def serve_simple_ui():
+    """Serve the simple memory management UI"""
+    return FileResponse("templates/index.html")
+
+@app.get("/ui")
 async def root():
     """Root endpoint - Railway sometimes checks this instead of /health"""
     return {
         "service": "Cortex API", 
         "status": "running",
         "version": "1.0.0",
-        "health_check": "/health"
+        "health_check": "/health",
+        "ui": "/",
+        "simple_ui": "/simple"
     }
 
 @app.get("/health")

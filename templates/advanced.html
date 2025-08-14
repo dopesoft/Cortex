@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex Memory Manager - Full Suite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%); 
+            color: #fff; min-height: 100vh;
+        }
+        .sidebar {
+            position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
+            background: #1a1a1a; border-right: 1px solid #333; padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar h2 { color: #00ff88; margin-bottom: 20px; font-size: 1.2rem; }
+        .nav-item { 
+            padding: 12px 16px; margin-bottom: 8px; border-radius: 8px; 
+            cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent;
+        }
+        .nav-item:hover { background: #2a2a2a; border-left-color: #00ff88; }
+        .nav-item.active { background: #2a2a2a; border-left-color: #00ff88; color: #00ff88; }
+        .main-content { margin-left: 280px; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #00ff88; font-size: 2.5rem; margin-bottom: 10px; }
+        .header p { color: #888; }
+        .section { background: rgba(26, 26, 26, 0.8); border-radius: 12px; padding: 30px; margin-bottom: 30px; border: 1px solid #333; backdrop-filter: blur(10px); }
+        .section h2 { color: #00ff88; margin-bottom: 20px; font-size: 1.5rem; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #ccc; font-weight: 500; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #444; 
+            border-radius: 8px; color: #fff; font-size: 14px; 
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none; border-color: #00ff88; box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+        }
+        .btn { 
+            background: linear-gradient(135deg, #00ff88, #00cc70); color: #000; 
+            border: none; padding: 12px 24px; border-radius: 8px; 
+            cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s;
+            margin-right: 10px; margin-bottom: 10px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
+        .btn.danger { background: linear-gradient(135deg, #ff4444, #cc3333); color: #fff; }
+        .btn.secondary { background: #444; color: #fff; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .memory-item { 
+            background: #222; border-radius: 8px; padding: 15px; margin-bottom: 15px; 
+            border-left: 4px solid #00ff88; position: relative;
+        }
+        .memory-text { color: #fff; margin-bottom: 10px; line-height: 1.5; }
+        .memory-meta { color: #888; font-size: 12px; }
+        .memory-actions { 
+            position: absolute; top: 10px; right: 10px; 
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .memory-item:hover .memory-actions { opacity: 1; }
+        .tab-container { margin-bottom: 20px; }
+        .tabs { display: flex; border-bottom: 1px solid #333; margin-bottom: 20px; }
+        .tab { 
+            padding: 12px 24px; cursor: pointer; border-bottom: 2px solid transparent;
+            transition: all 0.2s; color: #888;
+        }
+        .tab.active { color: #00ff88; border-bottom-color: #00ff88; }
+        .tab:hover { color: #fff; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { 
+            background: #2a2a2a; border-radius: 8px; padding: 20px; text-align: center;
+            border: 1px solid #444;
+        }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #00ff88; }
+        .stat-label { color: #888; margin-top: 5px; }
+        .results { background: #111; border-radius: 8px; padding: 20px; margin-top: 20px; max-height: 500px; overflow-y: auto; }
+        .loading { color: #00ff88; text-align: center; padding: 20px; }
+        .error { color: #ff4444; background: #2a1a1a; border: 1px solid #ff4444; border-radius: 8px; padding: 15px; margin-top: 10px; }
+        .success { color: #00ff88; background: #1a2a1a; border: 1px solid #00ff88; border-radius: 8px; padding: 15px; margin-top: 10px; }
+        .namespace-item {
+            background: #2a2a2a; border-radius: 8px; padding: 15px; margin-bottom: 10px;
+            display: flex; justify-content: between; align-items: center;
+        }
+        .namespace-info { flex: 1; }
+        .namespace-name { color: #00ff88; font-weight: 600; }
+        .namespace-count { color: #888; font-size: 12px; }
+        .advanced-search { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 768px) { 
+            .grid { grid-template-columns: 1fr; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; }
+            .advanced-search { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>🧠 Cortex Manager</h2>
+        <div class="nav-item active" onclick="showPage('dashboard')">📊 Dashboard</div>
+        <div class="nav-item" onclick="showPage('search')">🔍 Search Memories</div>
+        <div class="nav-item" onclick="showPage('add')">💾 Add Memory</div>
+        <div class="nav-item" onclick="showPage('manage')">🗂️ Manage Namespaces</div>
+        <div class="nav-item" onclick="showPage('analytics')">📈 Analytics</div>
+        <div class="nav-item" onclick="showPage('settings')">⚙️ Settings</div>
+        <div class="nav-item" onclick="showPage('help')">❓ Help</div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <div class="header">
+                    <h1>🧠 Cortex Memory Dashboard</h1>
+                    <p>Complete memory management for your AI system</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalMemories">-</div>
+                        <div class="stat-label">Total Memories</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalNamespaces">-</div>
+                        <div class="stat-label">Active Namespaces</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="recentQueries">-</div>
+                        <div class="stat-label">Recent Queries</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="systemHealth">✅</div>
+                        <div class="stat-label">System Health</div>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="section">
+                        <h2>🔥 Recent Activity</h2>
+                        <div id="recentActivity">Loading...</div>
+                    </div>
+                    <div class="section">
+                        <h2>📈 Usage Trends</h2>
+                        <div id="usageTrends">
+                            <p style="color: #888;">Memory usage analytics coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Page -->
+            <div id="search" class="page">
+                <div class="section">
+                    <h2>🔍 Advanced Memory Search</h2>
+                    
+                    <div class="tab-container">
+                        <div class="tabs">
+                            <div class="tab active" onclick="switchSearchTab('simple')">Simple Search</div>
+                            <div class="tab" onclick="switchSearchTab('advanced')">Advanced Search</div>
+                            <div class="tab" onclick="switchSearchTab('semantic')">Semantic Query</div>
+                        </div>
+
+                        <div id="simpleSearch" class="search-mode">
+                            <div class="form-group">
+                                <label for="searchNamespace">Namespace:</label>
+                                <select id="searchNamespace">
+                                    <option value="staffingbrain">staffingbrain (default)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="searchQuery">Search Query:</label>
+                                <input type="text" id="searchQuery" placeholder="What are you looking for?">
+                            </div>
+                            <div class="form-group">
+                                <label for="searchLimit">Results Limit:</label>
+                                <select id="searchLimit">
+                                    <option value="10">10 results</option>
+                                    <option value="25">25 results</option>
+                                    <option value="50">50 results</option>
+                                    <option value="100">100 results</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="advancedSearch" class="search-mode" style="display: none;">
+                            <div class="advanced-search">
+                                <div class="form-group">
+                                    <label for="advSearchQuery">Query:</label>
+                                    <input type="text" id="advSearchQuery" placeholder="Search query">
+                                </div>
+                                <div class="form-group">
+                                    <label for="advSearchSource">Source Filter:</label>
+                                    <input type="text" id="advSearchSource" placeholder="Filter by source">
+                                </div>
+                                <div class="form-group">
+                                    <label for="advSearchDateFrom">Date From:</label>
+                                    <input type="date" id="advSearchDateFrom">
+                                </div>
+                                <div class="form-group">
+                                    <label for="advSearchDateTo">Date To:</label>
+                                    <input type="date" id="advSearchDateTo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="semanticSearch" class="search-mode" style="display: none;">
+                            <div class="form-group">
+                                <label for="semanticQuery">Semantic Query:</label>
+                                <textarea id="semanticQuery" rows="3" placeholder="Describe what you're looking for in natural language..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="semanticMode">Analysis Mode:</label>
+                                <select id="semanticMode">
+                                    <option value="pattern_extraction">Pattern Extraction</option>
+                                    <option value="relationship_analysis">Relationship Analysis</option>
+                                    <option value="context_discovery">Context Discovery</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="performSearch()">🔍 Search</button>
+                    <button class="btn secondary" onclick="clearSearchResults()">🗑️ Clear Results</button>
+                    
+                    <div id="searchResults"></div>
+                </div>
+            </div>
+
+            <!-- Add Memory Page -->
+            <div id="add" class="page">
+                <div class="grid">
+                    <div class="section">
+                        <h2>💾 Add Single Memory</h2>
+                        <div class="form-group">
+                            <label for="addNamespace">Namespace:</label>
+                            <select id="addNamespace">
+                                <option value="staffingbrain">staffingbrain (default)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="memoryText">Memory Text:</label>
+                            <textarea id="memoryText" rows="4" placeholder="Enter the memory to store..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="memorySource">Source:</label>
+                            <input type="text" id="memorySource" placeholder="Document name, conversation, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label for="memoryTags">Tags (comma-separated):</label>
+                            <input type="text" id="memoryTags" placeholder="tag1, tag2, tag3">
+                        </div>
+                        <button class="btn" onclick="addMemory()">💾 Add Memory</button>
+                        <div id="addResult"></div>
+                    </div>
+
+                    <div class="section">
+                        <h2>📄 Bulk Import</h2>
+                        <div class="form-group">
+                            <label for="bulkNamespace">Target Namespace:</label>
+                            <select id="bulkNamespace">
+                                <option value="staffingbrain">staffingbrain (default)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bulkText">Bulk Text (one memory per line):</label>
+                            <textarea id="bulkText" rows="8" placeholder="Enter multiple memories, one per line..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="bulkSource">Common Source:</label>
+                            <input type="text" id="bulkSource" placeholder="Source for all memories">
+                        </div>
+                        <button class="btn" onclick="bulkAddMemories()">📄 Bulk Import</button>
+                        <div id="bulkResult"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Namespaces Page -->
+            <div id="manage" class="page">
+                <div class="grid">
+                    <div class="section">
+                        <h2>🗂️ Namespace Management</h2>
+                        <button class="btn" onclick="refreshNamespaces()">🔄 Refresh List</button>
+                        <button class="btn secondary" onclick="createNamespace()">➕ Create Namespace</button>
+                        <div id="namespaceList"></div>
+                    </div>
+
+                    <div class="section">
+                        <h2>🗑️ Cleanup Operations</h2>
+                        <div class="form-group">
+                            <label for="cleanupNamespace">Namespace to Clean:</label>
+                            <select id="cleanupNamespace">
+                                <option value="">Select namespace...</option>
+                            </select>
+                        </div>
+                        <button class="btn danger" onclick="clearNamespace()">🗑️ Clear All Memories</button>
+                        <button class="btn danger" onclick="deleteNamespace()">❌ Delete Namespace</button>
+                        <div id="cleanupResult"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div id="analytics" class="page">
+                <div class="section">
+                    <h2>📈 Memory Analytics</h2>
+                    <div class="grid-3">
+                        <div class="stat-card">
+                            <div class="stat-number" id="avgMemoryLength">-</div>
+                            <div class="stat-label">Avg Memory Length</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="mostActiveNamespace">-</div>
+                            <div class="stat-label">Most Active Namespace</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="searchAccuracy">-</div>
+                            <div class="stat-label">Search Accuracy</div>
+                        </div>
+                    </div>
+                    <div id="analyticsDetails">
+                        <p style="color: #888;">Detailed analytics coming soon...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="page">
+                <div class="section">
+                    <h2>⚙️ System Settings</h2>
+                    <div class="form-group">
+                        <label for="defaultNamespace">Default Namespace:</label>
+                        <input type="text" id="defaultNamespace" value="staffingbrain">
+                    </div>
+                    <div class="form-group">
+                        <label for="searchResultsDefault">Default Search Results:</label>
+                        <select id="searchResultsDefault">
+                            <option value="10">10 results</option>
+                            <option value="25" selected>25 results</option>
+                            <option value="50">50 results</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="autoRefresh" checked> Auto-refresh dashboard
+                        </label>
+                    </div>
+                    <button class="btn" onclick="saveSettings()">💾 Save Settings</button>
+                    <div id="settingsResult"></div>
+                </div>
+            </div>
+
+            <!-- Help Page -->
+            <div id="help" class="page">
+                <div class="section">
+                    <h2>❓ Help & Documentation</h2>
+                    <h3 style="color: #00ff88; margin-bottom: 15px;">Quick Start Guide</h3>
+                    <ol style="color: #ccc; line-height: 1.6; margin-bottom: 20px;">
+                        <li><strong>Search:</strong> Use the search page to find memories across namespaces</li>
+                        <li><strong>Add:</strong> Store new memories individually or in bulk</li>
+                        <li><strong>Manage:</strong> Create, view, and clean up namespaces</li>
+                        <li><strong>Monitor:</strong> Use the dashboard to track system health</li>
+                    </ol>
+                    
+                    <h3 style="color: #00ff88; margin-bottom: 15px;">API Endpoints</h3>
+                    <div style="background: #222; padding: 15px; border-radius: 8px; color: #fff; font-family: monospace;">
+                        POST /search_memory - Search memories<br>
+                        POST /add_memories - Add new memories<br>
+                        POST /clear_namespace - Clear namespace<br>
+                        GET /health - System health check<br>
+                        POST /deep_memory_query - Advanced queries
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const API_KEY = 'default-api-key';
+        let currentSearchMode = 'simple';
+
+        // Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function switchSearchTab(mode) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.search-mode').forEach(m => m.style.display = 'none');
+            event.target.classList.add('active');
+            document.getElementById(mode + 'Search').style.display = 'block';
+            currentSearchMode = mode;
+        }
+
+        // Dashboard functions
+        async function updateDashboard() {
+            try {
+                const healthResponse = await fetch(`${API_BASE}/health`);
+                const healthData = await healthResponse.json();
+                document.getElementById('systemHealth').textContent = healthData.status === 'healthy' ? '✅' : '❌';
+                
+                // Update other stats (mock data for now)
+                document.getElementById('totalMemories').textContent = '1,234';
+                document.getElementById('totalNamespaces').textContent = '12';
+                document.getElementById('recentQueries').textContent = '89';
+                
+                document.getElementById('recentActivity').innerHTML = `
+                    <div style="color: #888; margin-bottom: 10px;">• Memory added to staffingbrain namespace</div>
+                    <div style="color: #888; margin-bottom: 10px;">• Search query: "client meetings"</div>
+                    <div style="color: #888; margin-bottom: 10px;">• Namespace cleared: test_data</div>
+                `;
+            } catch (error) {
+                console.error('Dashboard update failed:', error);
+            }
+        }
+
+        // Search functions
+        async function performSearch() {
+            let searchParams = {};
+            
+            if (currentSearchMode === 'simple') {
+                const namespace = document.getElementById('searchNamespace').value;
+                const query = document.getElementById('searchQuery').value;
+                const limit = parseInt(document.getElementById('searchLimit').value);
+                
+                if (!query) {
+                    showError(document.getElementById('searchResults'), 'Please enter a search query');
+                    return;
+                }
+                
+                searchParams = { namespace, query, limit };
+            } else if (currentSearchMode === 'semantic') {
+                const namespace = document.getElementById('searchNamespace').value;
+                const query = document.getElementById('semanticQuery').value;
+                const analysisType = document.getElementById('semanticMode').value;
+                
+                if (!query) {
+                    showError(document.getElementById('searchResults'), 'Please enter a semantic query');
+                    return;
+                }
+                
+                // Use deep_memory_query for semantic search
+                return await performDeepQuery(namespace, query, analysisType);
+            }
+            
+            const resultsDiv = document.getElementById('searchResults');
+            showLoading(resultsDiv);
+            
+            try {
+                const response = await fetch(`${API_BASE}/search_memory`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify(searchParams)
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayMemories(resultsDiv, data.memories || [], `Found ${data.total || 0} memories`);
+                } else {
+                    showError(resultsDiv, data.detail || 'Search failed');
+                }
+            } catch (error) {
+                showError(resultsDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        async function performDeepQuery(namespace, query, analysisType) {
+            const resultsDiv = document.getElementById('searchResults');
+            showLoading(resultsDiv);
+            
+            try {
+                const response = await fetch(`${API_BASE}/deep_memory_query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        namespace,
+                        query,
+                        analysis_type: analysisType,
+                        save_insights: true
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const results = data.results?.memories || [];
+                    displayMemories(resultsDiv, results, `Deep analysis found ${data.patterns_found || 0} patterns`);
+                } else {
+                    showError(resultsDiv, data.detail || 'Deep query failed');
+                }
+            } catch (error) {
+                showError(resultsDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        function clearSearchResults() {
+            document.getElementById('searchResults').innerHTML = '';
+        }
+
+        // Add memory functions
+        async function addMemory() {
+            const namespace = document.getElementById('addNamespace').value;
+            const text = document.getElementById('memoryText').value;
+            const source = document.getElementById('memorySource').value;
+            const tags = document.getElementById('memoryTags').value;
+            const resultDiv = document.getElementById('addResult');
+            
+            if (!text) {
+                showError(resultDiv, 'Please enter memory text');
+                return;
+            }
+
+            showLoading(resultDiv);
+            
+            try {
+                const memory = {
+                    text,
+                    metadata: {
+                        source: source || 'manual_entry',
+                        tags: tags ? tags.split(',').map(t => t.trim()) : [],
+                        timestamp: new Date().toISOString()
+                    }
+                };
+                
+                const response = await fetch(`${API_BASE}/add_memories`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({ namespace, memories: [memory] })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showSuccess(resultDiv, '✅ Memory added successfully!');
+                    document.getElementById('memoryText').value = '';
+                    document.getElementById('memorySource').value = '';
+                    document.getElementById('memoryTags').value = '';
+                } else {
+                    showError(resultDiv, data.detail || 'Failed to add memory');
+                }
+            } catch (error) {
+                showError(resultDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        async function bulkAddMemories() {
+            const namespace = document.getElementById('bulkNamespace').value;
+            const bulkText = document.getElementById('bulkText').value;
+            const commonSource = document.getElementById('bulkSource').value;
+            const resultDiv = document.getElementById('bulkResult');
+            
+            if (!bulkText) {
+                showError(resultDiv, 'Please enter bulk text');
+                return;
+            }
+
+            const lines = bulkText.split('\n').filter(line => line.trim());
+            if (lines.length === 0) {
+                showError(resultDiv, 'No valid memories found');
+                return;
+            }
+
+            showLoading(resultDiv);
+            
+            try {
+                const memories = lines.map(line => ({
+                    text: line.trim(),
+                    metadata: {
+                        source: commonSource || 'bulk_import',
+                        timestamp: new Date().toISOString()
+                    }
+                }));
+                
+                const response = await fetch(`${API_BASE}/add_memories`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({ namespace, memories })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showSuccess(resultDiv, `✅ Successfully imported ${memories.length} memories!`);
+                    document.getElementById('bulkText').value = '';
+                    document.getElementById('bulkSource').value = '';
+                } else {
+                    showError(resultDiv, data.detail || 'Failed to import memories');
+                }
+            } catch (error) {
+                showError(resultDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        // Namespace management
+        async function refreshNamespaces() {
+            const listDiv = document.getElementById('namespaceList');
+            showLoading(listDiv);
+            
+            // Mock namespace data for now
+            const namespaces = [
+                { name: 'staffingbrain', count: 1234, lastUpdated: '2025-08-14' },
+                { name: 'staffingbrain_john_doe', count: 89, lastUpdated: '2025-08-13' },
+                { name: 'test_data', count: 45, lastUpdated: '2025-08-12' }
+            ];
+            
+            const html = namespaces.map(ns => `
+                <div class="namespace-item">
+                    <div class="namespace-info">
+                        <div class="namespace-name">${ns.name}</div>
+                        <div class="namespace-count">${ns.count} memories • Last updated: ${ns.lastUpdated}</div>
+                    </div>
+                    <div>
+                        <button class="btn secondary" onclick="viewNamespace('${ns.name}')">View</button>
+                        <button class="btn danger" onclick="clearSpecificNamespace('${ns.name}')">Clear</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            listDiv.innerHTML = html;
+            
+            // Update cleanup dropdown
+            const cleanupSelect = document.getElementById('cleanupNamespace');
+            cleanupSelect.innerHTML = '<option value="">Select namespace...</option>' +
+                namespaces.map(ns => `<option value="${ns.name}">${ns.name}</option>`).join('');
+        }
+
+        async function clearNamespace() {
+            const namespace = document.getElementById('cleanupNamespace').value;
+            const resultDiv = document.getElementById('cleanupResult');
+            
+            if (!namespace) {
+                showError(resultDiv, 'Please select a namespace');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to clear ALL memories in namespace "${namespace}"? This cannot be undone.`)) {
+                return;
+            }
+
+            showLoading(resultDiv);
+            
+            try {
+                const response = await fetch(`${API_BASE}/clear_namespace`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({ namespace, confirm: true })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showSuccess(resultDiv, '✅ Namespace cleared successfully!');
+                    refreshNamespaces();
+                } else {
+                    showError(resultDiv, data.detail || 'Failed to clear namespace');
+                }
+            } catch (error) {
+                showError(resultDiv, 'Network error: ' + error.message);
+            }
+        }
+
+        // Utility functions
+        function displayMemories(container, memories, title = '') {
+            if (memories.length === 0) {
+                container.innerHTML = `<div class="results"><p style="color: #888;">No memories found.</p></div>`;
+                return;
+            }
+
+            const html = memories.map((memory, index) => `
+                <div class="memory-item">
+                    <div class="memory-actions">
+                        <button class="btn secondary" onclick="editMemory(${index})">Edit</button>
+                        <button class="btn danger" onclick="deleteMemory(${index})">Delete</button>
+                    </div>
+                    <div class="memory-text">${escapeHtml(memory.text || memory.content || 'No text')}</div>
+                    <div class="memory-meta">
+                        ${memory.metadata ? Object.entries(memory.metadata).map(([key, value]) => 
+                            `${key}: ${escapeHtml(String(value))}`
+                        ).join(' • ') : 'No metadata'}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `<div class="results">
+                ${title ? `<h3>${title}:</h3>` : ''}
+                ${html}
+            </div>`;
+        }
+
+        function showLoading(container) {
+            container.innerHTML = '<div class="loading">🔄 Loading...</div>';
+        }
+
+        function showError(container, message) {
+            container.innerHTML = `<div class="error">❌ ${escapeHtml(message)}</div>`;
+        }
+
+        function showSuccess(container, message) {
+            container.innerHTML = `<div class="success">${escapeHtml(message)}</div>`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDashboard();
+            refreshNamespaces();
+            
+            // Auto-refresh dashboard every 30 seconds
+            setInterval(updateDashboard, 30000);
+        });
+    </script>
+</body>
+</html>
