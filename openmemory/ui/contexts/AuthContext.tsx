@@ -58,8 +58,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userObject = currentSession?.user && 'user' in currentSession.user ? (currentSession.user as any).user : currentSession?.user;
     setUser(userObject ?? null);
     
-    // Check if user is admin (developer) - you can modify this logic as needed
-    const adminEmails = ['nagarethineni@gmail.com']; // Add your admin emails here
+    // Check if user is admin (developer) - only khaya@staffingreferrals.com has admin access
+    const adminEmails = ['khaya@staffingreferrals.com'];
     const userIsAdmin = userObject?.email && adminEmails.includes(userObject.email);
     setIsAdmin(userIsAdmin || false);
     
