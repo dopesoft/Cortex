@@ -216,14 +216,16 @@ async def add_memories(request: AddMemoriesRequest, api_key: str = Depends(verif
     try:
         if jm_add_memories:
             # Convert to jean-memory format
+            results = []
             for memory in request.memories:
+                # Extract tags from metadata if present
+                tags = memory.metadata.get("tags", []) if memory.metadata else []
                 result = await jm_add_memories(
-                    current_user=get_mock_user(),
                     text=memory.text,
-                    app_id=None,  # Use namespace mapping in production
-                    metadata=memory.metadata
+                    tags=tags
                 )
-            return {"status": "success", "count": len(request.memories)}
+                results.append(result)
+            return {"status": "success", "count": len(request.memories), "results": results}
         else:
             # Return success even without jean-memory (direct database storage working)
             logger.info(f"Direct storage: Adding {len(request.memories)} memories to {request.namespace}")
@@ -238,13 +240,20 @@ async def search_memory(request: SearchMemoryRequest, api_key: str = Depends(ver
     try:
         if jm_search_memory:
             result = await jm_search_memory(
-                current_user=get_mock_user(),
                 query=request.query,
                 limit=request.limit
             )
+            # jean-memory functions might return string or dict
+            if isinstance(result, str):
+                import json
+                try:
+                    result = json.loads(result)
+                except:
+                    result = {"memories": [{"text": result}], "total": 1}
+            
             return {
-                "memories": result.get("memories", []),
-                "total": result.get("total", 0)
+                "memories": result.get("memories", []) if isinstance(result, dict) else [{"text": str(result)}],
+                "total": result.get("total", 0) if isinstance(result, dict) else 1
             }
         else:
             # Direct database query fallback
@@ -435,8 +444,11 @@ async def deep_memory_query(request: DeepMemoryQueryRequest, api_key: str = Depe
     try:
         if jm_deep_query:
             result = await jm_deep_query(
-                current_user=get_mock_user(),
-                search_query=request.query
+                namespace=request.namespace,
+                query=request.query,
+                filters=request.filters,
+                analysis_type=request.analysis_type,
+                save_insights=request.save_insights
             )
             # Transform to expected format
             return {

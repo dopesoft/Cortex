@@ -12,27 +12,28 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Script from "next/script";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://jeanmemory.com'),
   title: {
-    default: 'Jean Memory - Your Personal Memory Layer',
-    template: '%s | Jean Memory',
+    default: 'Cortex Memory - Your Personal Memory Layer',
+    template: '%s | Cortex Memory',
   },
-  description: 'Securely store, manage, and access your digital memories across all your AI applications with Jean Memory.',
+  description: 'Securely store, manage, and access your digital memories across all your AI applications with Cortex Memory.',
   openGraph: {
-    title: 'Jean Memory - Your Personal Memory Layer',
+    title: 'Cortex Memory - Your Personal Memory Layer',
     description: 'Securely store, manage, and access your digital memories across all your AI applications.',
     url: 'https://jeanmemory.com',
-    siteName: 'Jean Memory',
+    siteName: 'Cortex Memory',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Jean Memory Banner',
+        alt: 'Cortex Memory Banner',
       },
     ],
     locale: 'en_US',
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jean Memory - Your Personal Memory Layer',
+    title: 'Cortex Memory - Your Personal Memory Layer',
     description: 'Securely store, manage, and access your digital memories across all your AI applications.',
     images: ['/og-image.png'],
   },
@@ -58,7 +59,7 @@ export default function RootLayout({
         <link rel="icon" href="/images/jean-white-theme-bug.png" sizes="any" />
       </head>
       <body className={cn(
-        "min-h-screen font-sans antialiased flex flex-col bg-background text-foreground",
+        "min-h-screen font-sans antialiased bg-background text-foreground",
         inter.className
       )}>
         {/* Google tag (gtag.js) */}
@@ -79,16 +80,22 @@ export default function RootLayout({
           <AuthProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="dark"
+              defaultTheme="light"
               enableSystem
               disableTransitionOnChange
             >
-              <Navbar />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Toaster />
-              <SonnerToaster />
+              <SidebarProvider>
+                <TooltipProvider>
+                  <div className="flex h-screen w-full">
+                    <Navbar />
+                    <main className="flex-1 overflow-hidden">
+                      {children}
+                    </main>
+                  </div>
+                  <Toaster />
+                  <SonnerToaster />
+                </TooltipProvider>
+              </SidebarProvider>
             </ThemeProvider>
           </AuthProvider>
         </Providers>
