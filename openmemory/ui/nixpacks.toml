@@ -1,0 +1,9 @@
+[phases.setup]
+nixPkgs = ['...']
+cmds = ['echo "Using Dockerfile instead of nixpacks"']
+
+[phases.build]
+cmds = ['echo "Dockerfile build"']
+
+[start]
+cmd = 'echo "Use Dockerfile"'

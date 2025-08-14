@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "packageManager": "pnpm@8.15.0",
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@qdrant/js-client-rest": "^1.12.0",

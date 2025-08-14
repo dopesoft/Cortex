@@ -1,8 +1,10 @@
 [build]
 builder = "dockerfile"
 dockerfilePath = "Dockerfile"
+buildCommand = "npm install -g pnpm && pnpm install && pnpm build"
 
 [deploy]
+startCommand = "pnpm start"
 restartPolicyType = "on_failure"
 
 [env]
