@@ -1,9 +1,9 @@
-[phases.setup]
-nixPkgs = ['...']
-cmds = ['echo "Using Dockerfile instead of nixpacks"']
+[variables]
+NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "false"
 
 [phases.build]
-cmds = ['echo "Dockerfile build"']
+cmds = ["npm run build"]
 
 [start]
-cmd = 'echo "Use Dockerfile"'
+cmd = "npm start"
