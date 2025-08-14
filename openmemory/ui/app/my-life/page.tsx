@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import KnowledgeGraph from "./components/KnowledgeGraph";
 import AdvancedKnowledgeGraph from "./components/AdvancedKnowledgeGraph";
 // import ChatInterface from "./components/ChatInterface";
