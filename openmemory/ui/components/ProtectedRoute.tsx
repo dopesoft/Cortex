@@ -14,13 +14,16 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
+  // Admin bypass for development/testing (bypass auth if ?admin=true in URL)
+  const isAdminBypass = typeof window !== 'undefined' && window.location.search.includes('admin=true');
+
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isLoading && !user && !isAdminBypass) {
       router.replace("/auth");
     }
-  }, [user, isLoading, router]);
+  }, [user, isLoading, router, isAdminBypass]);
 
-  if (isLoading) {
+  if (isLoading && !isAdminBypass) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -28,7 +31,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!user) {
+  if (!user && !isAdminBypass) {
     return null;
   }
 

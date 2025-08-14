@@ -47,6 +47,13 @@ export default function LandingPage() {
     const params = new URLSearchParams(
       window.location.search + window.location.hash.substring(1)
     );
+    
+    // Admin bypass - redirect to dashboard if admin=true
+    if (params.get("admin") === "true") {
+      window.location.href = "/dashboard?admin=true";
+      return;
+    }
+    
     if (params.get("code") || params.get("access_token")) {
       return;
     }
