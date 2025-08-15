@@ -11,53 +11,25 @@ import { cn } from "@/lib/utils";
 import { Brain, Shield, Database, Zap } from "lucide-react";
 
 export default function LandingPage() {
-  const { user, isLoading, isAdmin } = useAuth();
-  const [activeTab, setActiveTab] = useState("memory");
   const router = useRouter();
 
-  // Check for admin email and redirect to dashboard immediately
+  // NUCLEAR OPTION: ALWAYS redirect to dashboard on production URL
   useEffect(() => {
-    // Check if we're dealing with khaya@staffingreferrals.com
-    const isAdminEmail = user?.email === 'khaya@staffingreferrals.com' || 
-                        (!user && typeof window !== 'undefined' && 
-                         window.location.href.includes('cortex-ui-production.up.railway.app'));
-    
-    if (isAdminEmail) {
-      router.push('/dashboard');
-      return;
+    if (typeof window !== 'undefined') {
+      // Force redirect to dashboard immediately - no questions asked
+      router.replace('/dashboard');
     }
+  }, [router]);
 
-    const params = new URLSearchParams(
-      window.location.search + window.location.hash.substring(1)
-    );
-    if (params.get("code") || params.get("access_token")) {
-      return;
-    }
-  }, [user, router]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center text-black">
-        Loading...
+  // Show loading while redirecting
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center text-black">
+      <div className="text-center">
+        <Brain className="w-12 h-12 text-purple-600 mx-auto mb-4 animate-pulse" />
+        <p>Redirecting to Cortex Dashboard...</p>
       </div>
-    );
-  }
-
-  // If this is the admin user or production URL, show loading while redirecting
-  const isAdminEmail = user?.email === 'khaya@staffingreferrals.com' || 
-                      (typeof window !== 'undefined' && 
-                       window.location.href.includes('cortex-ui-production.up.railway.app'));
-  
-  if (isAdminEmail) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center text-black">
-        <div className="text-center">
-          <Brain className="w-12 h-12 text-purple-600 mx-auto mb-4 animate-pulse" />
-          <p>Redirecting to Cortex Dashboard...</p>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 
   return (
     <div className="relative min-h-screen bg-gray-50 text-gray-900 overflow-hidden">

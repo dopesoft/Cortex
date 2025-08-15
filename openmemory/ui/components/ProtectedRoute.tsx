@@ -11,56 +11,6 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user, isLoading, isAdmin } = useAuth();
-  const router = useRouter();
-
-  // Check if this is the production URL - bypass auth for admin
-  const isProductionUrl = typeof window !== 'undefined' && 
-                         window.location.href.includes('cortex-ui-production.up.railway.app');
-
-  useEffect(() => {
-    // Skip auth redirect for production URL
-    if (isProductionUrl) {
-      return;
-    }
-    
-    if (!isLoading && !user) {
-      router.replace("/auth");
-    }
-  }, [user, isLoading, router, isProductionUrl]);
-
-  if (isLoading && !isProductionUrl) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  // Allow access for production URL or authenticated users
-  if (!user && !isProductionUrl) {
-    return null;
-  }
-
-  // If user is logged in but not admin, show no access message (unless production URL)
-  if (user && !isAdmin && !isProductionUrl) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center p-8 max-w-md">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <XCircle className="w-8 h-8 text-red-600" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Restricted</h1>
-          <p className="text-gray-600 mb-4">
-            You don't have permission to access this system. Only authorized administrators can use Cortex Memory.
-          </p>
-          <p className="text-sm text-gray-500">
-            Logged in as: {user.email}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
+  // NUCLEAR OPTION: Just return the children - no protection at all
   return <>{children}</>;
 }
