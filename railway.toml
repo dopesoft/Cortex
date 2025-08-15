@@ -1,13 +1,11 @@
 [build]
-builder = "dockerfile"
-dockerfilePath = "Dockerfile"
+buildCommand = "cd openmemory/ui && npm install && npm run build"
+watchPatterns = ["openmemory/ui/**/*.tsx", "openmemory/ui/**/*.ts", "openmemory/ui/**/*.js", "openmemory/ui/**/*.jsx", "openmemory/ui/**/*.css"]
 
 [deploy]
-# Use Docker CMD instead of explicit startCommand
-# healthcheckPath = "/health" - Disabled, using Docker healthcheck instead
-healthcheckTimeout = 300
-restartPolicyType = "on_failure"
+startCommand = "cd openmemory/ui && npm start"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
 
 [env]
-CORTEX_PORT = "8765"
 NODE_ENV = "production"
