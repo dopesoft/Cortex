@@ -62,8 +62,8 @@ const MCPDocsPage = () => {
     return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading...</div>;
   }
 
-  const mcpUrl = `https://jean-memory-api-virginia.onrender.com/mcp/v2/claude/${user.id}`;
-  const restApiUrl = `https://api.jeanmemory.com/api/v1/mcp/search_memory`;
+  const mcpUrl = `https://cortex-memory-api-virginia.onrender.com/mcp/v2/claude/${user.id}`;
+  const restApiUrl = `https://api.cortex-ui-production.up.railway.app/api/v1/mcp/search_memory`;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-300">

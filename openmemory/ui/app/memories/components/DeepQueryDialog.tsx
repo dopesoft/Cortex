@@ -42,7 +42,7 @@ export function DeepQueryDialog() {
       const accessToken = session.access_token;
       
       // Use the enhanced Jean Memory V2 deep life query endpoint
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jean-memory-api-virginia.onrender.com';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://cortex-memory-api-virginia.onrender.com';
       const response = await fetch(`${apiUrl}/api/v1/memories/deep-life-query`, {
         method: 'POST',
         headers: {

@@ -13,7 +13,7 @@ import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 type ActiveView = 'daily-brain' | 'chat' | 'opportunities' | 'strategy' | 'admin' | 'settings';
 
 export default function RootPage() {
-  // DEPLOYMENT TEST - If you see jean-memory, Railway is not deploying this code!
+  // DEPLOYMENT TEST - If you see cortex-memory, Railway is not deploying this code!
   if (typeof window !== 'undefined') {
     console.log('🚀 DOPESOFT DEPLOYMENT ACTIVE - JEAN MEMORY SHOULD BE DEAD');
     document.title = '🚀 DopeSoft Cortex - Jean Memory OBLITERATED';

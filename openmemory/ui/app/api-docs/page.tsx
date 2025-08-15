@@ -373,7 +373,7 @@ const DiagramModal = ({ chart, onClose }: { chart: string; onClose: () => void }
 };
 
 const ApiDocsPage = () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://jean-memory-api-virginia.onrender.com";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://cortex-memory-api-virginia.onrender.com";
   const [isDiagramModalOpen, setIsDiagramModalOpen] = useState(false);
 
   const architectureDiagram = `
@@ -480,7 +480,7 @@ agent.run()  # Interactive CLI chat`} />
             <div className="mt-4 flex gap-3">
               <Button 
                 className="bg-blue-600 hover:bg-blue-700"
-                onClick={() => window.open('https://github.com/jean-technologies/jean-memory/tree/main/sdk', '_blank')}
+                onClick={() => window.open('https://github.com/jean-technologies/cortex-memory/tree/main/sdk', '_blank')}
               >
                 <Code className="w-4 h-4 mr-2" />
                 View SDK Examples

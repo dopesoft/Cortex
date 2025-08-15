@@ -46,7 +46,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
     // Download the HTTP v2 extension (faster transport)
     const backendUrl = process.env.NODE_ENV === 'development' 
       ? 'http://localhost:8765' 
-      : 'https://jean-memory-api-virginia.onrender.com';
+      : 'https://cortex-memory-api-virginia.onrender.com';
     window.open(`${backendUrl}/download/claude-extension-http`, '_blank');
     
     toast({
@@ -165,11 +165,11 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
   // Most clients use HTTP (actual API URL), only specific clients need SSE (Cloudflare Worker)
   const needsSSE = ['vscode', 'chatgpt'].includes(app.id);
   const MCP_URL = needsSSE 
-    ? "https://api.jeanmemory.com" 
+    ? "https://api.cortex-ui-production.up.railway.app" 
     : (process.env.NEXT_PUBLIC_API_URL || 
        (process.env.NODE_ENV === 'production' 
-         ? "https://jean-memory-api-virginia.onrender.com" 
-         : "https://jean-memory-api-dev.onrender.com"));
+         ? "https://cortex-memory-api-virginia.onrender.com" 
+         : "https://cortex-memory-api-dev.onrender.com"));
 
   // Environment-aware OAuth URL for Claude
   const CLAUDE_OAUTH_URL = `${MCP_URL}/oauth/authorize?client_id=claude-ai&response_type=code&redirect_uri=https%3A%2F%2Fclaude.ai%2Fapi%2Fmcp%2Fauth_callback&scope=read+write&state=claude-connection`;
@@ -227,9 +227,9 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
 
   const vscodeMcpConfig = {
     "servers": {
-      "jean-memory": {
+      "cortex-memory": {
         "type": "sse",
-        "url": `https://api.jeanmemory.com/mcp/vscode/sse/${userId}`
+        "url": `https://api.cortex-ui-production.up.railway.app/mcp/vscode/sse/${userId}`
       }
     }
   };
@@ -339,11 +339,11 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                 <Button 
                     onClick={() => {
                         const mcpConfig = {
-                            "url": `https://jean-memory-api-virginia.onrender.com/mcp/v2/cursor/${user?.id}`,
+                            "url": `https://cortex-memory-api-virginia.onrender.com/mcp/v2/cursor/${user?.id}`,
                             "env": {}
                         };
                         const encodedConfig = btoa(JSON.stringify(mcpConfig));
-                        const deepLink = `cursor://anysphere.cursor-deeplink/mcp/install?name=jean-memory&config=${encodedConfig}`;
+                        const deepLink = `cursor://anysphere.cursor-deeplink/mcp/install?name=cortex-memory&config=${encodedConfig}`;
                         window.open(deepLink, '_blank');
                         
                         toast({
@@ -641,13 +641,13 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                                 <p className="text-xs text-muted-foreground mb-2">Add Jean Memory as an HTTP MCP server:</p>
                                 <div className="relative bg-background border rounded-md">
                                     <div className="overflow-x-auto p-3 pr-12 font-mono text-xs text-foreground">
-                                        <code className="whitespace-pre-wrap break-words">claude mcp add --transport http jean-memory {MCP_URL}/mcp</code>
+                                        <code className="whitespace-pre-wrap break-words">claude mcp add --transport http cortex-memory {MCP_URL}/mcp</code>
                                     </div>
                                     <Button 
                                         variant="ghost" 
                                         size="sm"
                                         className="absolute right-1 top-1/2 -translate-y-1/2" 
-                                        onClick={() => handleCopy(`claude mcp add --transport http jean-memory ${MCP_URL}/mcp`)}
+                                        onClick={() => handleCopy(`claude mcp add --transport http cortex-memory ${MCP_URL}/mcp`)}
                                     >
                                         {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
                                     </Button>
@@ -671,7 +671,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                                         <Copy className="h-4 w-4" />
                                     </Button>
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-2">You should see "jean-memory" in the list of active servers.</p>
+                                <p className="text-xs text-muted-foreground mt-2">You should see "cortex-memory" in the list of active servers.</p>
                             </div>
 
                             <div className="bg-green-50 dark:bg-green-950/30 rounded-md p-3 border border-green-200 dark:border-green-800">
@@ -712,13 +712,13 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                                 <p className="text-xs text-muted-foreground mb-2">Add the enhanced Jean Memory server with multi-agent capabilities:</p>
                                 <div className="relative bg-background border rounded-md">
                                     <div className="overflow-x-auto p-3 pr-12 font-mono text-xs text-foreground">
-                                        <code className="whitespace-pre-wrap break-words">claude mcp add --transport http jean-memory {MCP_URL}/mcp/v2/claude/{user?.id || '{your-user-id}'}</code>
+                                        <code className="whitespace-pre-wrap break-words">claude mcp add --transport http cortex-memory {MCP_URL}/mcp/v2/claude/{user?.id || '{your-user-id}'}</code>
                                     </div>
                                     <Button 
                                         variant="ghost" 
                                         size="sm"
                                         className="absolute right-1 top-1/2 -translate-y-1/2" 
-                                        onClick={() => handleCopy(`claude mcp add --transport http jean-memory ${MCP_URL}/mcp/v2/claude/${user?.id || '{your-user-id}'}`)}
+                                        onClick={() => handleCopy(`claude mcp add --transport http cortex-memory ${MCP_URL}/mcp/v2/claude/${user?.id || '{your-user-id}'}`)}
                                     >
                                         {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
                                     </Button>

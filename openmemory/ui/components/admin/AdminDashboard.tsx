@@ -32,7 +32,7 @@ const AdminDashboard = () => {
       </div>
       <div className="mt-8 p-6 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg">
         <h2 className="text-2xl font-bold mb-2">Welcome to Your Cortex!</h2>
-        <p>No more jean-memory bullshit. This is YOUR dashboard now.</p>
+        <p>No more cortex-memory bullshit. This is YOUR dashboard now.</p>
         <p className="mt-2 text-sm opacity-90">🚀 Built by DopeSoft Engineering</p>
         <p className="mt-2 text-xs opacity-70">DEPLOYMENT TEST: {new Date().toISOString()}</p>
       </div>

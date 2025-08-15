@@ -58,7 +58,7 @@ const AppDetailCard = ({
     // Download the HTTP v2 extension
     const backendUrl = process.env.NODE_ENV === 'development' 
       ? 'http://localhost:8765' 
-      : 'https://jean-memory-api-virginia.onrender.com';
+      : 'https://cortex-memory-api-virginia.onrender.com';
     window.open(`${backendUrl}/download/claude-extension-http`, '_blank');
     
     toast({
@@ -187,12 +187,12 @@ const AppDetailCard = ({
                   </p>
                   <div className="flex gap-2">
                     <Input
-                      value={`curl -o claude-extension.zip "${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://jean-memory-api-virginia.onrender.com'}/download/claude-extension-http" && unzip claude-extension.zip && open claude-extension.mcp`}
+                      value={`curl -o claude-extension.zip "${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://cortex-memory-api-virginia.onrender.com'}/download/claude-extension-http" && unzip claude-extension.zip && open claude-extension.mcp`}
                       readOnly
                       className="text-xs font-mono"
                     />
                     <Button
-                      onClick={() => handleCopy(`curl -o claude-extension.zip "${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://jean-memory-api-virginia.onrender.com'}/download/claude-extension-http" && unzip claude-extension.zip && open claude-extension.mcp`)}
+                      onClick={() => handleCopy(`curl -o claude-extension.zip "${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://cortex-memory-api-virginia.onrender.com'}/download/claude-extension-http" && unzip claude-extension.zip && open claude-extension.mcp`)}
                       size="sm"
                       variant="outline"
                     >
@@ -217,12 +217,12 @@ const AppDetailCard = ({
                   </p>
                   <div className="flex gap-2">
                     <Input
-                      value={`claude mcp add jean-memory ${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://jean-memory-api-virginia.onrender.com'}/mcp/v2/claude/${user?.user_id || '{user_id}'} --scope local`}
+                      value={`claude mcp add cortex-memory ${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://cortex-memory-api-virginia.onrender.com'}/mcp/v2/claude/${user?.user_id || '{user_id}'} --scope local`}
                       readOnly
                       className="text-xs font-mono"
                     />
                     <Button
-                      onClick={() => handleCopy(`claude mcp add jean-memory ${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://jean-memory-api-virginia.onrender.com'}/mcp/v2/claude/${user?.user_id || '{user_id}'} --scope local`)}
+                      onClick={() => handleCopy(`claude mcp add cortex-memory ${process.env.NODE_ENV === 'development' ? 'http://localhost:8765' : 'https://cortex-memory-api-virginia.onrender.com'}/mcp/v2/claude/${user?.user_id || '{user_id}'} --scope local`)}
                       size="sm"
                       variant="outline"
                     >

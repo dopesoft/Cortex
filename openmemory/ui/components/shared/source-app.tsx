@@ -39,8 +39,8 @@ export const constants = {
   },
   "jean memory": {
     name: "Jean Memory",
-    icon: <Icon source="/images/jean-bug.png" />,
-    iconImage: "/images/jean-bug.png",
+    icon: <Icon source="/images/dopesoft-logo.png" />,
+    iconImage: "/images/dopesoft-logo.png",
   },
   cursor: {
     name: "Cursor",

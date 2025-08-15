@@ -48,7 +48,7 @@ const colorGradientMap: { [key: string]: string } = {
 const API_URL_ON_LOAD = 
   process.env.NEXT_PUBLIC_API_URL || 
   (process.env.NODE_ENV === 'production' 
-    ? "https://api.jeanmemory.com" 
+    ? "https://api.cortex-ui-production.up.railway.app" 
     : "http://localhost:8765");
 
 export const Install = () => {
@@ -61,12 +61,12 @@ export const Install = () => {
   const handleCopy = async (tab: string, isMcp: boolean = false) => {
     let textToCopy;
     if (tab === 'cursor') {
-      const cursorMcpUrl = "https://jean-memory-api-virginia.onrender.com";
+      const cursorMcpUrl = "https://cortex-memory-api-virginia.onrender.com";
       textToCopy = `npx -y supergateway --stdio ${cursorMcpUrl}/mcp/v2/cursor/${userId}`;
     } else {
       // Most clients use HTTP (Virginia direct), only specific clients need SSE (Cloudflare Worker)
       const needsSSE = ['vscode', 'chatgpt'].includes(tab);
-      const MCP_URL = needsSSE ? "https://api.jeanmemory.com" : "https://jean-memory-api-virginia.onrender.com";
+      const MCP_URL = needsSSE ? "https://api.cortex-ui-production.up.railway.app" : "https://cortex-memory-api-virginia.onrender.com";
       textToCopy =
         isMcp
           ? `${MCP_URL}/mcp/openmemory/sse/${userId}`
@@ -96,25 +96,25 @@ export const Install = () => {
 
   // Generate Cursor deep link for one-click installation
   const generateCursorDeepLink = () => {
-    const MCP_URL = "https://jean-memory-api-virginia.onrender.com";
+    const MCP_URL = "https://cortex-memory-api-virginia.onrender.com";
     const mcpConfig = {
       "url": `${MCP_URL}/mcp/v2/cursor/${userId}`,
       "env": {}
     };
     
     const encodedConfig = btoa(JSON.stringify(mcpConfig));
-    return `cursor://anysphere.cursor-deeplink/mcp/install?name=jean-memory&config=${encodedConfig}`;
+    return `cursor://anysphere.cursor-deeplink/mcp/install?name=cortex-memory&config=${encodedConfig}`;
   };
 
   const renderInstallCard = (appKey: string, title: string, isMcp: boolean = false) => {
     let manualCommand;
     if (appKey === 'cursor') {
-      const MCP_URL = "https://jean-memory-api-virginia.onrender.com";
-      manualCommand = `Add to ~/.cursor/mcp.json: {"mcpServers":{"jean-memory":{"url":"${MCP_URL}/mcp/v2/cursor/${userId}","env":{}}}}`;
+      const MCP_URL = "https://cortex-memory-api-virginia.onrender.com";
+      manualCommand = `Add to ~/.cursor/mcp.json: {"mcpServers":{"cortex-memory":{"url":"${MCP_URL}/mcp/v2/cursor/${userId}","env":{}}}}`;
     } else {
       // Most clients use HTTP (Virginia direct), only specific clients need SSE (Cloudflare Worker)
       const needsSSE = ['vscode', 'chatgpt'].includes(appKey);
-      const MCP_URL = needsSSE ? "https://api.jeanmemory.com" : "https://jean-memory-api-virginia.onrender.com";
+      const MCP_URL = needsSSE ? "https://api.cortex-ui-production.up.railway.app" : "https://cortex-memory-api-virginia.onrender.com";
       manualCommand = isMcp 
         ? `${MCP_URL}/mcp/openmemory/sse/${userId}`
         : `npx install-mcp "${MCP_URL}/mcp/${appKey}/sse/${userId}" --client ${appKey}`;
