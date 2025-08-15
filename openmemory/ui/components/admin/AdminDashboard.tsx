@@ -34,6 +34,7 @@ const AdminDashboard = () => {
         <h2 className="text-2xl font-bold mb-2">Welcome to Your Cortex!</h2>
         <p>No more jean-memory bullshit. This is YOUR dashboard now.</p>
         <p className="mt-2 text-sm opacity-90">🚀 Built by DopeSoft Engineering</p>
+        <p className="mt-2 text-xs opacity-70">DEPLOYMENT TEST: {new Date().toISOString()}</p>
       </div>
     </div>
   );

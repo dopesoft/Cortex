@@ -13,6 +13,11 @@ import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 type ActiveView = 'daily-brain' | 'chat' | 'opportunities' | 'strategy' | 'admin' | 'settings';
 
 export default function RootPage() {
+  // DEPLOYMENT TEST - If you see jean-memory, Railway is not deploying this code!
+  if (typeof window !== 'undefined') {
+    console.log('🚀 DOPESOFT DEPLOYMENT ACTIVE - JEAN MEMORY SHOULD BE DEAD');
+    document.title = '🚀 DopeSoft Cortex - Jean Memory OBLITERATED';
+  }
   // Check URL params for initial view, but also check localStorage for last view
   const getInitialView = (): ActiveView => {
     // Skip localStorage on server side
