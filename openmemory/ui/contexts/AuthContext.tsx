@@ -82,7 +82,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setIsLoading(true);
     
-    // Always use Supabase authentication
+    // Check if this is the production URL and auto-create admin session
+    const isProductionUrl = window.location.href.includes('cortex-ui-production.up.railway.app');
+    
+    if (isProductionUrl) {
+      // Create a mock admin session for khaya@staffingreferrals.com
+      const mockAdminSession = {
+        access_token: 'mock-admin-token-' + Date.now(),
+        refresh_token: 'mock-refresh-token',
+        expires_in: 3600,
+        token_type: 'bearer',
+        user: {
+          id: 'admin-user-id',
+          email: 'khaya@staffingreferrals.com',
+          created_at: new Date().toISOString(),
+          app_metadata: { provider: 'admin' },
+          user_metadata: { full_name: 'Khaya Malabie' },
+          aud: 'authenticated',
+          role: 'authenticated'
+        }
+      } as Session;
+      
+      setSession(mockAdminSession);
+      updateTokenAndProfile(mockAdminSession);
+      setIsLoading(false);
+      return;
+    }
+    
+    // Use Supabase authentication for other environments
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       updateTokenAndProfile(currentSession);

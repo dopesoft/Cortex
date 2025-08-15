@@ -14,13 +14,22 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, isLoading, isAdmin } = useAuth();
   const router = useRouter();
 
+  // Check if this is the production URL - bypass auth for admin
+  const isProductionUrl = typeof window !== 'undefined' && 
+                         window.location.href.includes('cortex-ui-production.up.railway.app');
+
   useEffect(() => {
+    // Skip auth redirect for production URL
+    if (isProductionUrl) {
+      return;
+    }
+    
     if (!isLoading && !user) {
       router.replace("/auth");
     }
-  }, [user, isLoading, router]);
+  }, [user, isLoading, router, isProductionUrl]);
 
-  if (isLoading) {
+  if (isLoading && !isProductionUrl) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -28,12 +37,13 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!user) {
+  // Allow access for production URL or authenticated users
+  if (!user && !isProductionUrl) {
     return null;
   }
 
-  // If user is logged in but not admin, show no access message
-  if (user && !isAdmin) {
+  // If user is logged in but not admin, show no access message (unless production URL)
+  if (user && !isAdmin && !isProductionUrl) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center p-8 max-w-md">
