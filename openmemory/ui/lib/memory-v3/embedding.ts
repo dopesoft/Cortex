@@ -1,5 +1,5 @@
 /**
- * Jean Memory V3 Local Embedding Service
+ * DopeSoft Cortex V3 Local Embedding Service
  * 
  * Provides browser-based embedding generation using Transformers.js with:
  * - Local model execution (no server calls)

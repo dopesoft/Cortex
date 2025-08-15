@@ -86,7 +86,7 @@ export function SmsModal({ open, onOpenChange }: SmsModalProps) {
 
       toast({
         title: "Verification code sent",
-        description: `Check your phone for a 6-digit code from Jean Memory`,
+        description: `Check your phone for a 6-digit code from DopeSoft Cortex`,
       });
 
     } catch (error: any) {
@@ -132,7 +132,7 @@ export function SmsModal({ open, onOpenChange }: SmsModalProps) {
 
       toast({
         title: "Phone verified!",
-        description: "You can now send SMS commands to Jean Memory",
+        description: "You can now send SMS commands to DopeSoft Cortex",
       });
 
     } catch (error: any) {
@@ -177,7 +177,7 @@ export function SmsModal({ open, onOpenChange }: SmsModalProps) {
             <MessageSquare className="w-8 h-8 text-blue-500" />
           </div>
           <MobileOptimizedDialogTitle className="text-2xl font-bold">
-            Text Jean Memory
+            Text DopeSoft Cortex
           </MobileOptimizedDialogTitle>
           <MobileOptimizedDialogDescription className="text-muted-foreground pt-1">
             Connect your phone to text your personal AI memory assistant anytime, anywhere
@@ -319,7 +319,7 @@ export function SmsModal({ open, onOpenChange }: SmsModalProps) {
             SMS Connected!
           </MobileOptimizedDialogTitle>
           <MobileOptimizedDialogDescription className="text-muted-foreground pt-1">
-            You can now text Jean Memory to manage your memories
+            You can now text DopeSoft Cortex to manage your memories
           </MobileOptimizedDialogDescription>
         </MobileOptimizedDialogHeader>
 
@@ -329,7 +329,7 @@ export function SmsModal({ open, onOpenChange }: SmsModalProps) {
               🎉 Ready to use! Try sending:
             </h4>
             <div className="text-sm text-green-700 dark:text-green-300 space-y-1">
-              <div>• <code>remember: Jean Memory SMS is working!</code></div>
+              <div>• <code>remember: DopeSoft Cortex SMS is working!</code></div>
               <div>• <code>search: working</code></div>
               <div>• <code>help</code> for all commands</div>
             </div>
@@ -362,7 +362,7 @@ export function SmsModal({ open, onOpenChange }: SmsModalProps) {
             Upgrade Required
           </MobileOptimizedDialogTitle>
           <MobileOptimizedDialogDescription className="text-muted-foreground pt-1">
-            SMS features are available with Jean Memory Pro
+            SMS features are available with DopeSoft Cortex Pro
           </MobileOptimizedDialogDescription>
         </MobileOptimizedDialogHeader>
 

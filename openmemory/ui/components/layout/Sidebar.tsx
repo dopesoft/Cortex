@@ -47,7 +47,7 @@ export const Sidebar = ({ activeView, onViewChange }: SidebarProps) => {
       
       <div className="absolute bottom-4 left-4 right-4">
         <div className="text-xs text-gray-500 text-center">
-          <p>✨ Jean Memory: ELIMINATED</p>
+          <p>✨ DopeSoft Cortex: ELIMINATED</p>
           <p>🚀 DopeSoft Engineering</p>
         </div>
       </div>

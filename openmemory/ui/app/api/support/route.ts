@@ -39,13 +39,13 @@ export async function POST(request: NextRequest) {
       const resend = new Resend(process.env.RESEND_API_KEY);
       
       const data = await resend.emails.send({
-        from: 'Jean Memory Support <onboarding@resend.dev>',
+        from: 'DopeSoft Cortex Support <onboarding@resend.dev>',
         to: ['politzki18@gmail.com'],
         replyTo: email,
-        subject: `Jean Memory Support Request from ${name}`,
+        subject: `DopeSoft Cortex Support Request from ${name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #8b5cf6;">New Jean Memory Support Request</h2>
+            <h2 style="color: #8b5cf6;">New DopeSoft Cortex Support Request</h2>
             
             <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <p><strong>Name:</strong> ${name}</p>
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
             
             <p style="color: #6b7280; font-size: 14px;">
-              <em>Sent from Jean Memory MCP Setup Page</em><br>
+              <em>Sent from DopeSoft Cortex MCP Setup Page</em><br>
               <em>Reply to this email to respond directly to ${name}</em>
             </p>
           </div>

@@ -41,7 +41,7 @@ export function DeepQueryDialog() {
       
       const accessToken = session.access_token;
       
-      // Use the enhanced Jean Memory V2 deep life query endpoint
+      // Use the enhanced DopeSoft Cortex V2 deep life query endpoint
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://cortex-memory-api-virginia.onrender.com';
       const response = await fetch(`${apiUrl}/api/v1/memories/deep-life-query`, {
         method: 'POST',
@@ -89,7 +89,7 @@ export function DeepQueryDialog() {
         <DialogHeader>
           <DialogTitle>Ask a Deep Life Query</DialogTitle>
           <DialogDescription>
-            Ask a complex question about your life. Jean Memory V2 will analyze your comprehensive memory archive using advanced semantic search and ontology-guided insights.
+            Ask a complex question about your life. DopeSoft Cortex V2 will analyze your comprehensive memory archive using advanced semantic search and ontology-guided insights.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

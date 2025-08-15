@@ -79,7 +79,7 @@ export default function TestPage() {
   // Add welcome message after component mounts to avoid hydration issues
   useEffect(() => {
     if (messages.length === 0) {
-      addMessage("👋 Welcome to Jean Memory Demo! This is a client-side simulation of our memory functionality. Try adding memories, searching them, or asking questions. All data stays in your browser - nothing is sent to any server.", 'system');
+      addMessage("👋 Welcome to DopeSoft Cortex Demo! This is a client-side simulation of our memory functionality. Try adding memories, searching them, or asking questions. All data stays in your browser - nothing is sent to any server.", 'system');
     }
   }, [messages.length]);
 
@@ -129,7 +129,7 @@ export default function TestPage() {
       }
 
       toast({
-        title: "Jean Memory Responded",
+        title: "DopeSoft Cortex Responded",
         description: "Response received from the AI assistant.",
       });
 
@@ -159,7 +159,7 @@ export default function TestPage() {
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2">
                 <Brain className="w-8 h-8 text-purple-400" />
-                <span className="text-xl font-bold text-white">Jean Memory</span>
+                <span className="text-xl font-bold text-white">DopeSoft Cortex</span>
               </div>
               <div className="hidden sm:flex items-center space-x-4 text-sm text-zinc-400">
                 <span>{memories.length} memories stored</span>

@@ -65,7 +65,7 @@ export function CreateMemoryDialog() {
         <DialogHeader>
           <DialogTitle>Create New Memory</DialogTitle>
           <DialogDescription>
-            Add a new memory to your Jean Memory instance
+            Add a new memory to your DopeSoft Cortex instance
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

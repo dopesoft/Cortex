@@ -237,13 +237,13 @@ function AdvancedKnowledgeGraphInner({ onMemorySelect }: AdvancedKnowledgeGraphP
   
   const userId = useSelector((state: RootState) => state.profile.userId);
 
-  // Jean Memory brand colors and styling functions
+  // DopeSoft Cortex brand colors and styling functions
   const getBrandColorForNode = (node: any) => {
-    // Beautiful Jean Memory color palette with gradients
+    // Beautiful DopeSoft Cortex color palette with gradients
     const importance = node.strength || 1;
     const nodeType = node.type || 'memory';
     
-    // App-specific colors for memories with Jean Memory aesthetic
+    // App-specific colors for memories with DopeSoft Cortex aesthetic
     if (nodeType === 'memory') {
       const appColors: { [key: string]: string } = {
         'claude': '#8B5CF6',     // Purple
@@ -302,7 +302,7 @@ function AdvancedKnowledgeGraphInner({ onMemorySelect }: AdvancedKnowledgeGraphP
               let baseSize = type === 'cluster' ? 50 : (type === 'entity' ? 40 : 35); // Larger, readable sizes
               return Math.min(baseSize + (importance - 1) * 5, baseSize * 1.3);
             },
-            'box-shadow': '0 0 20px rgba(99, 102, 241, 0.4)', // Subtle Jean Memory glow
+            'box-shadow': '0 0 20px rgba(99, 102, 241, 0.4)', // Subtle DopeSoft Cortex glow
             'border-width': 1,
             'border-color': 'rgba(255, 255, 255, 0.2)',
             'border-opacity': 0.8,

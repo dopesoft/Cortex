@@ -1,10 +1,10 @@
 /**
- * Jean Memory V3 STM Service
+ * DopeSoft Cortex V3 STM Service
  * 
  * Core service that provides Short-Term Memory functionality including:
  * - Memory lifecycle management
  * - Local semantic search
- * - Background sync with Jean Memory V2
+ * - Background sync with DopeSoft Cortex V2
  * - Conflict detection and resolution
  */
 
@@ -340,7 +340,7 @@ export class STMServiceImpl implements STMService {
       let downloaded = 0;
       let conflicts = 0;
       
-      // TODO: Implement actual sync with Jean Memory V2 API
+      // TODO: Implement actual sync with DopeSoft Cortex V2 API
       // For now, just mark as synced
       for (const memory of pendingMemories) {
         if (!memory.local_only) {

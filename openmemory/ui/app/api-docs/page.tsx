@@ -383,7 +383,7 @@ graph TD
         E["API User<br/>(Programmatic Access)"] --> H;
     end
 
-    subgraph "Unified Jean Memory API"
+    subgraph "Unified DopeSoft Cortex API"
         H["POST /mcp/messages/"] -- "All requests" --> I{Dual-Path Authentication};
         I -- "x-user-id + x-client-name" --> J["Claude Tools Schema<br/>(Simple, no tags)"];
         I -- "X-Api-Key" --> K["API Tools Schema<br/>(Advanced, with tags)"];
@@ -411,19 +411,19 @@ graph TD
     <ProtectedRoute>
       <DocsLayout navItems={navItems}>
         <section id="introduction">
-          <h1 className="text-4xl font-bold text-foreground mb-4">Jean Memory API</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-4">DopeSoft Cortex API</h1>
           <p className="text-xl text-muted-foreground mb-6">
             Build personal or enterprise agents with human-like memory
           </p>
 
-          {/* Jean Memory SDK Quickstart */}
+          {/* DopeSoft Cortex SDK Quickstart */}
           <div className="my-8 p-6 bg-gradient-to-r from-blue-950/50 to-purple-950/50 border border-blue-800/60 rounded-lg">
             <div className="flex items-center mb-4">
               <Sparkles className="w-6 h-6 text-blue-400 mr-3" />
-              <h2 className="text-2xl font-bold text-foreground">🚀 Jean Memory SDK - Build AI Chatbots in 5 Lines</h2>
+              <h2 className="text-2xl font-bold text-foreground">🚀 DopeSoft Cortex SDK - Build AI Chatbots in 5 Lines</h2>
             </div>
             <p className="text-muted-foreground mb-6">
-              Skip the API complexity. Build personalized AI chatbots with Jean Memory context in just 5 lines of code.
+              Skip the API complexity. Build personalized AI chatbots with DopeSoft Cortex context in just 5 lines of code.
             </p>
             
             <div className="grid md:grid-cols-2 gap-6">
@@ -500,7 +500,7 @@ agent.run()  # Interactive CLI chat`} />
           </div>
 
           <p className="text-lg text-muted-foreground mb-4">
-            Welcome to the Jean Memory API documentation. This API provides a robust, unified memory layer for your AI applications, featuring secure API key authentication and powerful metadata filtering for advanced use cases.
+            Welcome to the DopeSoft Cortex API documentation. This API provides a robust, unified memory layer for your AI applications, featuring secure API key authentication and powerful metadata filtering for advanced use cases.
           </p>
           <div className="flex items-center gap-4 p-4 bg-green-950/50 border border-green-800/60 rounded-lg">
             <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
@@ -775,7 +775,7 @@ x-client-name: your-app-name`} />
         <section id="key-concepts">
           <h2 className="text-3xl font-bold text-foreground mb-4">Key Concepts for Developers</h2>
           <p className="text-muted-foreground mb-4">
-            Understanding these architectural concepts is crucial for building reliable and performant applications with the Jean Memory API.
+            Understanding these architectural concepts is crucial for building reliable and performant applications with the DopeSoft Cortex API.
           </p>
           <Alert variant="default" className="bg-blue-950/50 border-blue-800/60 text-blue-300 mb-6">
             <BrainCircuit className="h-4 w-4 text-blue-400" />
@@ -879,7 +879,7 @@ API_KEY = os.environ.get("JEAN_API_KEY")
 API_URL = "${API_URL}/mcp/messages/"
 
 def call_jean_api(payload):
-    """Helper function to call the Jean Memory API."""
+    """Helper function to call the DopeSoft Cortex API."""
     if not API_KEY:
         raise ValueError("JEAN_API_KEY environment variable not set!")
     

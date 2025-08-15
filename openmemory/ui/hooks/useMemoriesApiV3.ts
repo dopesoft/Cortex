@@ -1,8 +1,8 @@
 /**
- * Jean Memory V3 Enhanced API Hook
+ * DopeSoft Cortex V3 Enhanced API Hook
  * 
  * Extends the existing useMemoriesApi with STM (Short-Term Memory) capabilities.
- * Provides seamless integration between local STM and remote Jean Memory V2.
+ * Provides seamless integration between local STM and remote DopeSoft Cortex V2.
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';

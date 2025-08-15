@@ -71,10 +71,10 @@ const MCPDocsPage = () => {
         <div className="max-w-4xl mx-auto py-16">
             <div className="space-y-12">
               
-                <DocsHeader title="Agent Integration Guide" subtitle="How to connect AI agents and custom applications to Jean Memory." />
+                <DocsHeader title="Agent Integration Guide" subtitle="How to connect AI agents and custom applications to DopeSoft Cortex." />
 
                 <DocsSection id="connection-methods" title="Connection Methods">
-                    <p>There are two ways to connect to Jean Memory, depending on your use case.</p>
+                    <p>There are two ways to connect to DopeSoft Cortex, depending on your use case.</p>
                     <ul className="list-disc pl-5 space-y-2">
                         <li>
                             <strong className="text-slate-200">MCP for Compatible Agents:</strong> For agents that support the Model Context Protocol (like the Claude desktop app), use the `install-mcp` command. This is the simplest method for pre-built agents.
@@ -96,7 +96,7 @@ const MCPDocsPage = () => {
                 <DocsSection id="rest-api" title="Method 2: Integrating a Custom Script via REST API">
                     <p>This is the correct method for building a new agent from scratch in any language.</p>
                     <h3 className="font-semibold text-slate-200 pt-4">Step 1: Get Your JWT Token</h3>
-                    <p>To authenticate with the REST API, you need a JSON Web Token. You can get this by logging into the Jean Memory web app, opening your browser's developer tools, and copying the `Bearer Token` from the `Authorization` header of any API request.</p>
+                    <p>To authenticate with the REST API, you need a JSON Web Token. You can get this by logging into the DopeSoft Cortex web app, opening your browser's developer tools, and copying the `Bearer Token` from the `Authorization` header of any API request.</p>
                     <CodeBlock code={`# Your JWT will be a very long string, e.g.:
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`} lang="text" />
                     

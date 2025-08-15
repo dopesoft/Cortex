@@ -84,7 +84,7 @@ const AppDetailCard = ({
               src={
                 constants[appId as keyof typeof constants]?.iconImage || ""
               }
-              alt="Jean Memory"
+              alt="DopeSoft Cortex"
               width={24}
               height={24}
             />
@@ -277,7 +277,7 @@ const AppDetailCard = ({
                     </summary>
                     <div className="mt-3 space-y-3 pl-4">
                       <p className="text-xs text-muted-foreground">
-                        To make Jean Memory automatically save everything from your Claude Code sessions, add this system prompt:
+                        To make DopeSoft Cortex automatically save everything from your Claude Code sessions, add this system prompt:
                       </p>
                       
                       <div className="bg-background border rounded-md p-2">

@@ -13,7 +13,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 const primaryTools = [
   {
     name: "jean_memory",
-    description: "The intelligent memory layer that automatically learns from every conversation and provides relevant context when you need it. Simply use this tool and Jean Memory handles everything else.",
+    description: "The intelligent memory layer that automatically learns from every conversation and provides relevant context when you need it. Simply use this tool and DopeSoft Cortex handles everything else.",
     examples: [
       "jean_memory: 'I just finished my morning workout' (is_new_conversation: true)",
       "jean_memory: 'What did I work on yesterday?' (needs_context: true)",
@@ -80,10 +80,10 @@ export default function HowToUsePage() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-            Jean Memory
+            DopeSoft Cortex
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-            An agentic memory layer that learns from your conversations and provides intelligent context. Simply use these tools and Jean Memory handles the rest.
+            An agentic memory layer that learns from your conversations and provides intelligent context. Simply use these tools and DopeSoft Cortex handles the rest.
           </p>
         </motion.div>
 
@@ -141,7 +141,7 @@ export default function HowToUsePage() {
             <Card className="bg-muted/30">
               <CardHeader>
                 <CardTitle className="text-lg">
-                  How Jean Memory Works
+                  How DopeSoft Cortex Works
                 </CardTitle>
               </CardHeader>
               <CardContent>

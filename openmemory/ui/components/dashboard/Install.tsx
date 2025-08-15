@@ -135,7 +135,7 @@ export const Install = () => {
                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium"
               >
                 <ExternalLink className="h-4 w-4" />
-                Add Jean Memory to Cursor
+                Add DopeSoft Cortex to Cursor
               </a>
               <p className="text-xs text-zinc-500 mt-2">
                 One-click install using Cursor's native MCP integration
@@ -170,7 +170,7 @@ export const Install = () => {
           
           {isMcp && (
             <p className="text-xs text-zinc-500 mt-3">
-              Use this URL to connect Jean Memory to any MCP-compatible application
+              Use this URL to connect DopeSoft Cortex to any MCP-compatible application
             </p>
           )}
         </CardContent>
@@ -183,7 +183,7 @@ export const Install = () => {
       <div>
         <h2 className="text-2xl font-semibold text-zinc-100 mb-2">Quick Setup</h2>
         <p className="text-zinc-400 text-sm">
-          Connect Jean Memory to your favorite AI tools in seconds
+          Connect DopeSoft Cortex to your favorite AI tools in seconds
         </p>
       </div>
       

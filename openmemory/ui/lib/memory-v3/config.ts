@@ -1,5 +1,5 @@
 /**
- * Jean Memory V3 STM Configuration Manager
+ * DopeSoft Cortex V3 STM Configuration Manager
  * 
  * Handles configuration for the Short-Term Memory layer including
  * browser capabilities detection and adaptive settings.

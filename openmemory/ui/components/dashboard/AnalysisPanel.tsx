@@ -37,7 +37,7 @@ export function AnalysisPanel() {
         if (totalMemories > 5) {
           setIsGenerating(true);
           
-          // Call the backend narrative endpoint - it handles Jean Memory V2 internally
+          // Call the backend narrative endpoint - it handles DopeSoft Cortex V2 internally
           const narrativeResponse = await apiClient.get('/api/v1/memories/narrative');
 
           if (narrativeResponse.data && narrativeResponse.data.narrative) {
@@ -47,7 +47,7 @@ export function AnalysisPanel() {
             // Only show success toast for manual generation, not auto-generation
             // toast({
             //   title: 'Narrative Generated',
-            //   description: 'Your life narrative has been generated using Jean Memory V2.',
+            //   description: 'Your life narrative has been generated using DopeSoft Cortex V2.',
             // });
           } else {
             throw new Error('No narrative data received from server.');
@@ -85,7 +85,7 @@ export function AnalysisPanel() {
         setNarrative(narrativeResponse.data.narrative);
         toast({
           title: 'Narrative Generated',
-          description: 'Your life narrative has been generated using Jean Memory V2.',
+          description: 'Your life narrative has been generated using DopeSoft Cortex V2.',
         });
       } else {
         throw new Error('No narrative data received from server.');

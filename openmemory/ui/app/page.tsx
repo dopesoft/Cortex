@@ -16,7 +16,7 @@ export default function RootPage() {
   // DEPLOYMENT TEST - If you see cortex-memory, Railway is not deploying this code!
   if (typeof window !== 'undefined') {
     console.log('🚀 DOPESOFT DEPLOYMENT ACTIVE - JEAN MEMORY SHOULD BE DEAD');
-    document.title = '🚀 DopeSoft Cortex - Jean Memory OBLITERATED';
+    document.title = '🚀 DopeSoft Cortex - DopeSoft Cortex OBLITERATED';
   }
   // Check URL params for initial view, but also check localStorage for last view
   const getInitialView = (): ActiveView => {

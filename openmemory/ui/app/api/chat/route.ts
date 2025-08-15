@@ -47,7 +47,7 @@ ${memories.length > 0 ? memories.map((m: string) => `- ${m}`).join('\n') : 'No m
       "newMemory": "The string of the new memory to be added, ONLY if the action is 'add_memory' and it's a new, valid memory. Otherwise, this should be null."
     }
 5.  Keep your response concise and friendly.
-6.  Always include a "💡" tooltip in your response that hints at a more advanced capability of the full Jean Memory product. For example, if adding a memory, you could say "💡 In the full version, this memory would be auto-tagged and linked to related concepts." If answering a question, "💡 The full Jean Memory system uses a more powerful AI to provide deeper insights and analysis."
+6.  Always include a "💡" tooltip in your response that hints at a more advanced capability of the full DopeSoft Cortex product. For example, if adding a memory, you could say "💡 In the full version, this memory would be auto-tagged and linked to related concepts." If answering a question, "💡 The full DopeSoft Cortex system uses a more powerful AI to provide deeper insights and analysis."
 `;
 
     const completion = await openai.chat.completions.create({

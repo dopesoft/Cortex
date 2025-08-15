@@ -26,7 +26,7 @@ const AdminDashboard = () => {
           <p className="text-orange-600">🔓 Bypassed for Admin</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-2">Jean Memory</h3>
+          <h3 className="text-lg font-semibold mb-2">DopeSoft Cortex</h3>
           <p className="text-red-600">💀 OBLITERATED</p>
         </div>
       </div>

@@ -36,7 +36,7 @@ export default function SmsPreviewPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Connect SMS to Jean Memory
+              Connect SMS to DopeSoft Cortex
             </motion.h1>
             <motion.div
               className="bg-primary/20 text-primary text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1"
@@ -75,7 +75,7 @@ export default function SmsPreviewPage() {
           
           {/* Consent Text */}
           <p className="text-xs text-muted-foreground mb-6">
-            US phone numbers only. By providing your phone number, you agree to receive text messages from Jean Memory for account verification and to interact with your memory assistant. Message & data rates may apply.
+            US phone numbers only. By providing your phone number, you agree to receive text messages from DopeSoft Cortex for account verification and to interact with your memory assistant. Message & data rates may apply.
           </p>
           
           {/* How to Use Box */}
@@ -85,7 +85,7 @@ export default function SmsPreviewPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <p className="font-bold text-card-foreground mb-2">How to Use Jean Memory SMS:</p>
+            <p className="font-bold text-card-foreground mb-2">How to Use DopeSoft Cortex SMS:</p>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground text-xs">
                 <li>"Remember to pick up groceries after work"</li>
                 <li>"What were the main points from the meeting yesterday?"</li>
@@ -112,7 +112,7 @@ export default function SmsPreviewPage() {
 
           <p className="text-xs text-muted-foreground mt-8">
               This is a public mockup page for A2P 10DLC campaign verification. <br/>
-              Visit <a href="https://cortex-memory-ui-virginia.onrender.com/dashboard" className="text-primary hover:underline">Jean Memory Dashboard</a> to connect your phone number.
+              Visit <a href="https://cortex-memory-ui-virginia.onrender.com/dashboard" className="text-primary hover:underline">DopeSoft Cortex Dashboard</a> to connect your phone number.
           </p>
         </motion.div>
       </div>

@@ -79,7 +79,7 @@ export default function PrivacyPage() {
                   <p className="text-muted-foreground leading-snug">Trying something new here</p>
                 </a>
                 <a href="https://jonathanpolitzki.substack.com/p/cortex-memory-the-necessity-of-irreverence" target="_blank" rel="noopener noreferrer" className="text-center block p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                  <p className="font-semibold text-foreground text-sm mb-1">Jean Memory</p>
+                  <p className="font-semibold text-foreground text-sm mb-1">DopeSoft Cortex</p>
                   <p className="text-muted-foreground leading-snug">The Necessity of Irreverence</p>
                 </a>
               </div>

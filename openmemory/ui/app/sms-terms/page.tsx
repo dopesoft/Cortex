@@ -31,7 +31,7 @@ export default function SmsTermsPage() {
               SMS Terms of Service
             </h1>
             <p className="text-lg text-muted-foreground">
-              Jean Memory SMS Program
+              DopeSoft Cortex SMS Program
             </p>
           </div>
 
@@ -40,7 +40,7 @@ export default function SmsTermsPage() {
               <li>
                 <TermsSection title="Program Description">
                   <p>
-                    This service sends you one-time verification codes and allows you to interact with your Jean Memory assistant via text message. All messages after the initial opt-in are initiated by you.
+                    This service sends you one-time verification codes and allows you to interact with your DopeSoft Cortex assistant via text message. All messages after the initial opt-in are initiated by you.
                   </p>
                 </TermsSection>
               </li>

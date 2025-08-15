@@ -100,7 +100,7 @@ export function RequestIntegrationModal({ open, onOpenChange }: RequestIntegrati
             Request New Integration
           </MobileOptimizedDialogTitle>
           <MobileOptimizedDialogDescription className="text-muted-foreground pt-1">
-            Tell us which app you'd like to connect to Jean Memory
+            Tell us which app you'd like to connect to DopeSoft Cortex
           </MobileOptimizedDialogDescription>
         </MobileOptimizedDialogHeader>
 

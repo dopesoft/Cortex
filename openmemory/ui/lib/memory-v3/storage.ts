@@ -1,5 +1,5 @@
 /**
- * Jean Memory V3 Browser Storage Layer
+ * DopeSoft Cortex V3 Browser Storage Layer
  * 
  * Provides IndexedDB-based storage for STM memories with:
  * - High-performance indexed access

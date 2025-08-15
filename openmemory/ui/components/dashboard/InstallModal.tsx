@@ -255,19 +255,19 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
           <MobileOptimizedDialogTitle className="text-2xl font-bold">
             {app.id === 'mcp-generic' ? 'Your Universal MCP Link' : 
              app.id === 'chatgpt' ? 'Connect to ChatGPT Deep Research' :
-             app.id === 'sms' ? 'Text Jean Memory' :
+             app.id === 'sms' ? 'Text DopeSoft Cortex' :
              `Connect to ${app.name}`}
           </MobileOptimizedDialogTitle>
           <MobileOptimizedDialogDescription className="text-muted-foreground pt-1">
             {app.id === 'mcp-generic'
                 ? 'Use this URL for any MCP-compatible application.'
                 : app.id === 'chatgpt'
-                ? 'Add Jean Memory to ChatGPT Deep Research. Enterprise account required.'
+                ? 'Add DopeSoft Cortex to ChatGPT Deep Research. Enterprise account required.'
                 : app.id === 'substack' || app.id === 'twitter'
                 ? `Provide your ${app.name} details to sync your content.`
                 : app.id === 'sms'
                 ? 'Add your phone number to interact with your memories via text message.'
-                : `Jean Memory tracks your projects and builds a working memory.`
+                : `DopeSoft Cortex tracks your projects and builds a working memory.`
             }
           </MobileOptimizedDialogDescription>
         </MobileOptimizedDialogHeader>
@@ -275,7 +275,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
         {app.id === 'mcp-generic' ? (
             <div className="py-2 text-center">
                 <p className="text-muted-foreground text-sm mb-4">
-                    Copy this URL and paste it into any MCP-compatible application to connect it with Jean Memory.
+                    Copy this URL and paste it into any MCP-compatible application to connect it with DopeSoft Cortex.
                 </p>
                 <div className="relative group bg-background border rounded-md p-3 font-mono text-xs text-foreground flex items-center justify-between">
                     <code style={{ wordBreak: 'break-all' }}>{mcpLink}</code>
@@ -348,14 +348,14 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                         
                         toast({
                             title: "Opening Cursor", 
-                            description: "Cursor should now prompt you to install Jean Memory.",
+                            description: "Cursor should now prompt you to install DopeSoft Cortex.",
                         });
                     }}
                     className="w-full"
                     variant="default"
                 >
                     <Download className="mr-2 h-4 w-4" />
-                    Add Jean Memory to Cursor
+                    Add DopeSoft Cortex to Cursor
                 </Button>
                 
                 <div className="text-center">
@@ -364,11 +364,11 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                     </p>
                 </div>
                 
-                {/* Jean Memory Benefits */}
+                {/* DopeSoft Cortex Benefits */}
                 <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                     <h4 className="text-sm font-medium text-foreground">💭 Memory Across Sessions</h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                        Jean Memory tracks your projects and builds a working memory that persists across chat sessions. 
+                        DopeSoft Cortex tracks your projects and builds a working memory that persists across chat sessions. 
                         Your AI assistant will remember context from previous conversations, making each interaction more intelligent and productive.
                     </p>
                     <div className="flex items-start gap-2 mt-3">
@@ -439,7 +439,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                         <ol className="text-sm text-muted-foreground space-y-1 ml-4">
                             <li>1. Download and install the extension</li>
                             <li>2. Enter your User ID when prompted</li>
-                            <li>3. Start using Jean Memory in Claude Desktop</li>
+                            <li>3. Start using DopeSoft Cortex in Claude Desktop</li>
                         </ol>
                     </div>
                 </div>
@@ -497,7 +497,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                                 <li>1. Restart VS Code completely</li>
                                 <li>2. Open Chat (Ctrl/Cmd + Alt + I) → Agent mode</li>
                                 <li>3. Click "Trust" when prompted</li>
-                                <li>4. Click "Tools" to see Jean Memory</li>
+                                <li>4. Click "Tools" to see DopeSoft Cortex</li>
                             </ol>
                         </div>
                     </div>
@@ -506,7 +506,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
         ) : app.id === 'substack' || app.id === 'twitter' ? (
             <div className="py-2 space-y-4">
                 <p className="text-muted-foreground text-center text-sm">
-                    Enter your {app.name === 'X' ? 'username' : 'URL'} below. This allows Jean Memory to find and sync your content.
+                    Enter your {app.name === 'X' ? 'username' : 'URL'} below. This allows DopeSoft Cortex to find and sync your content.
                 </p>
                 <div className="flex items-center gap-4">
                   <Input
@@ -589,7 +589,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                     </div>
 
                     <p className="text-xs text-muted-foreground pt-3">
-                      By providing your phone number, you agree to receive informational text messages from Jean Memory. Consent is not a condition of purchase. Messages Frequency will vary. Msg & data rates may apply. Reply HELP for help or STOP to cancel.
+                      By providing your phone number, you agree to receive informational text messages from DopeSoft Cortex. Consent is not a condition of purchase. Messages Frequency will vary. Msg & data rates may apply. Reply HELP for help or STOP to cancel.
                     </p>
                   </>
                 ) : (
@@ -632,13 +632,13 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                     
                     <TabsContent value="single-agent" className="space-y-4">
                         <p className="text-muted-foreground text-sm mb-4">
-                            Jean Memory tracks your projects and builds a working memory.
+                            DopeSoft Cortex tracks your projects and builds a working memory.
                         </p>
                         
                         <div className="space-y-4">
                             <div>
                                 <h3 className="font-medium text-foreground mb-2">1. Add MCP Server</h3>
-                                <p className="text-xs text-muted-foreground mb-2">Add Jean Memory as an HTTP MCP server:</p>
+                                <p className="text-xs text-muted-foreground mb-2">Add DopeSoft Cortex as an HTTP MCP server:</p>
                                 <div className="relative bg-background border rounded-md">
                                     <div className="overflow-x-auto p-3 pr-12 font-mono text-xs text-foreground">
                                         <code className="whitespace-pre-wrap break-words">claude mcp add --transport http cortex-memory {MCP_URL}/mcp</code>
@@ -657,7 +657,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
 
                             <div>
                                 <h3 className="font-medium text-foreground mb-2">2. Verify Installation</h3>
-                                <p className="text-xs text-muted-foreground mb-2">Check that Jean Memory is active:</p>
+                                <p className="text-xs text-muted-foreground mb-2">Check that DopeSoft Cortex is active:</p>
                                 <div className="relative bg-background border rounded-md">
                                     <div className="overflow-x-auto p-3 pr-12 font-mono text-xs text-foreground">
                                         <code>claude mcp list</code>
@@ -709,7 +709,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                         <div className="space-y-4">
                             <div>
                                 <h3 className="font-medium text-foreground mb-2">1. Setup Multi-Agent MCP Server</h3>
-                                <p className="text-xs text-muted-foreground mb-2">Add the enhanced Jean Memory server with multi-agent capabilities:</p>
+                                <p className="text-xs text-muted-foreground mb-2">Add the enhanced DopeSoft Cortex server with multi-agent capabilities:</p>
                                 <div className="relative bg-background border rounded-md">
                                     <div className="overflow-x-auto p-3 pr-12 font-mono text-xs text-foreground">
                                         <code className="whitespace-pre-wrap break-words">claude mcp add --transport http cortex-memory {MCP_URL}/mcp/v2/claude/{user?.id || '{your-user-id}'}</code>
@@ -737,7 +737,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                                             1. Add user authentication<br/>
                                             2. Create admin dashboard<br/>
                                             3. Implement API rate limiting<br/><br/>
-                                            <span className="text-blue-600 dark:text-blue-400 font-medium">I want to build this using Jean Memory multi-agent coordination.</span>
+                                            <span className="text-blue-600 dark:text-blue-400 font-medium">I want to build this using DopeSoft Cortex multi-agent coordination.</span>
                                         </code>
                                     </div>
                                 </div>
@@ -863,7 +863,7 @@ export function InstallModal({ app, open, onOpenChange, onSyncStart }: InstallMo
                     <div>
                         <h3 className="font-semibold text-md text-foreground">2. Restart {app.name}</h3>
                         <p className="text-muted-foreground text-sm">
-                        After the command completes, restart the {app.name} application. Jean Memory will be active.
+                        After the command completes, restart the {app.name} application. DopeSoft Cortex will be active.
                         </p>
                     </div>
                 </div>

@@ -97,7 +97,7 @@ export function MemoryCard({
                       constants[app_name as keyof typeof constants]
                         ?.iconImage || ""
                     }
-                    alt="Jean Memory"
+                    alt="DopeSoft Cortex"
                     width={20}
                     height={20}
                   />

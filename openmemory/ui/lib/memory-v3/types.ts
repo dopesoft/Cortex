@@ -1,10 +1,10 @@
 /**
- * Jean Memory V3 STM (Short-Term Memory) Type Definitions
+ * DopeSoft Cortex V3 STM (Short-Term Memory) Type Definitions
  * 
  * These types define the browser-based Short-Term Memory layer that provides:
  * - Instant memory access and creation
  * - Local semantic search
- * - Background sync to Jean Memory V2 (LTM)
+ * - Background sync to DopeSoft Cortex V2 (LTM)
  */
 
 // STM Configuration
@@ -15,7 +15,7 @@ export interface STMConfig {
   /** Enable local embedding generation using Transformers.js */
   localEmbedding: boolean;
   
-  /** Enable automatic background sync to Jean Memory V2 */
+  /** Enable automatic background sync to DopeSoft Cortex V2 */
   autoSync: boolean;
   
   /** Sync interval in milliseconds */

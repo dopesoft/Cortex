@@ -33,12 +33,12 @@ export const constants = {
     iconImage: "/images/claude.webp",
   },
   openmemory: {
-    name: "Jean Memory",
+    name: "DopeSoft Cortex",
     icon: <Icon source="/images/open-memory.svg" />,
     iconImage: "/images/open-memory.svg",
   },
   "jean memory": {
-    name: "Jean Memory",
+    name: "DopeSoft Cortex",
     icon: <Icon source="/images/dopesoft-logo.png" />,
     iconImage: "/images/dopesoft-logo.png",
   },

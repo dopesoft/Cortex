@@ -121,7 +121,7 @@ export function MemoryDetails({ memory_id }: MemoryDetailsProps) {
                                 memory?.app_name as keyof typeof constants
                               ]?.iconImage || ""
                             }
-                            alt="Jean Memory"
+                            alt="DopeSoft Cortex"
                             width={16}
                             height={16}
                           />

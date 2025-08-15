@@ -1,8 +1,8 @@
 /**
- * Jean Memory V3 STM - Main Export
+ * DopeSoft Cortex V3 STM - Main Export
  * 
  * Browser-based Short-Term Memory layer for instant memory access
- * and local semantic search with background sync to Jean Memory V2.
+ * and local semantic search with background sync to DopeSoft Cortex V2.
  */
 
 // Core types

@@ -639,7 +639,7 @@ export function LifeGraph({ memories, deepQueryButton }: { memories: any[]; deep
     }
   };
 
-  // Enhanced processing using Jean Memory V2 API
+  // Enhanced processing using DopeSoft Cortex V2 API
   const processGraphDataEnhanced = async (query?: string) => {
     if (!accessToken) {
       console.error("No access token available");
